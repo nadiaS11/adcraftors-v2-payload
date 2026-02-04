@@ -1,22 +1,14 @@
-import type { CollectionConfig } from 'payload'
-
+import type { CollectionConfig } from "payload"
 import {
   FixedToolbarFeature,
   InlineToolbarFeature,
   lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+} from "@payloadcms/richtext-lexical"
+import { anyone } from "@/access/anyone"
+import { authenticated } from "@/access/authenticated"
 
 export const Media: CollectionConfig = {
-  slug: 'media',
-  folders: true,
+  slug: "media",
   access: {
     create: authenticated,
     delete: authenticated,
@@ -25,13 +17,16 @@ export const Media: CollectionConfig = {
   },
   fields: [
     {
-      name: 'alt',
-      type: 'text',
-      //required: true,
+      name: "alt",
+      type: "text",
     },
     {
-      name: 'caption',
-      type: 'richText',
+      name: "title",
+      type: "text",
+    },
+    {
+      name: "caption",
+      type: "richText",
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
@@ -40,42 +35,48 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
-    adminThumbnail: 'thumbnail',
+    staticDir: "media",
+    adminThumbnail: "thumbnail",
     focalPoint: true,
     imageSizes: [
       {
-        name: 'thumbnail',
+        name: "thumbnail",
         width: 300,
       },
       {
-        name: 'square',
-        width: 500,
-        height: 500,
+        name: "mobile",
+        width: 640,
+        // For screens up to 640px (mobile)
       },
       {
-        name: 'small',
-        width: 600,
+        name: "tablet",
+        width: 768,
+        // For screens up to 768px (tablet)
       },
       {
-        name: 'medium',
-        width: 900,
+        name: "desktop",
+        width: 1024,
+        // For screens up to 1024px (small desktop)
       },
       {
-        name: 'large',
-        width: 1400,
+        name: "large",
+        width: 1440,
+        // For screens up to 1440px (large desktop)
       },
       {
-        name: 'xlarge',
+        name: "xlarge",
         width: 1920,
+        // For screens up to 1920px (full HD)
       },
       {
-        name: 'og',
+        name: "og",
         width: 1200,
         height: 630,
-        crop: 'center',
+        crop: "center",
       },
     ],
+    formatOptions: {
+      format: "webp",
+    },
   },
 }

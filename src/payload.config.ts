@@ -9,8 +9,18 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+// Marketing Agency Collections
+import { Services } from './collections/Services'
+import { CaseStudies } from './collections/CaseStudies'
+import { TeamMembers } from './collections/TeamMembers'
+import { Testimonials } from './collections/Testimonials'
+import { Clients } from './collections/Clients'
+import { ContactSubmissions } from './collections/ContactSubmissions'
+// Globals
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { SiteSettings } from './globals/SiteSettings'
+import { DefaultSEO } from './globals/DefaultSEO'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -62,9 +72,24 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    // Independent collections (no relationships to custom collections)
+    Media,
+    Categories,
+    Users,
+    // Marketing Agency collections (order matters for relationships)
+    Clients, // No deps
+    TeamMembers, // No deps
+    Services, // No deps
+    Testimonials, // Depends on: Clients
+    CaseStudies, // Depends on: Clients, Services, TeamMembers, Testimonials
+    ContactSubmissions, // Depends on: Services, Users
+    // Core collections with blocks (depend on all above)
+    Pages,
+    Posts,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteSettings, DefaultSEO],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

@@ -13,6 +13,17 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
+// New Marketing Agency Blocks
+import { ServicesGrid } from '../../blocks/ServicesGrid/config'
+import { CaseStudiesShowcase } from '../../blocks/CaseStudiesShowcase/config'
+import { TestimonialsBlock } from '../../blocks/TestimonialsBlock/config'
+import { TextWithImage } from '../../blocks/TextWithImage/config'
+import { StatsBlock } from '../../blocks/StatsBlock/config'
+import { TeamGrid } from '../../blocks/TeamGrid/config'
+import { ClientsLogoGrid } from '../../blocks/ClientsLogoGrid/config'
+import { BlogPreview } from '../../blocks/BlogPreview/config'
+import { FAQBlock } from '../../blocks/FAQBlock/config'
+
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -72,7 +83,23 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                // Core blocks
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                ServicesGrid,
+                CaseStudiesShowcase,
+                TestimonialsBlock,
+                TextWithImage,
+                StatsBlock,
+                TeamGrid,
+                ClientsLogoGrid,
+                BlogPreview,
+                FAQBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

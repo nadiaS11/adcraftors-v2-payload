@@ -8,12 +8,34 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
-const blockComponents = {
+// New Marketing Agency Block Components
+import { ServicesGridBlockComponent } from '@/blocks/ServicesGrid/Component'
+import { StatsBlockComponent } from '@/blocks/StatsBlock/Component'
+import { TextWithImageBlockComponent } from '@/blocks/TextWithImage/Component'
+import { TestimonialsBlockComponent } from '@/blocks/TestimonialsBlock/Component'
+import { FAQBlockComponent } from '@/blocks/FAQBlock/Component'
+
+// Block component mapping
+const blockComponents: Record<string, React.FC<any>> = {
+  // Core blocks
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  // Marketing agency blocks
+  'services-grid': ServicesGridBlockComponent,
+  'stats-block': StatsBlockComponent,
+  'text-with-image': TextWithImageBlockComponent,
+  'testimonials-block': TestimonialsBlockComponent,
+  'faq-block': FAQBlockComponent,
+  // Placeholder components for blocks not yet implemented
+  'hero-block': () => null,
+  'case-studies-showcase': () => null,
+  'cta-section': () => null,
+  'team-grid': () => null,
+  'clients-logo-grid': () => null,
+  'blog-preview': () => null,
 }
 
 export const RenderBlocks: React.FC<{
@@ -34,8 +56,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error there may be some mismatch between the expected types here */}
+                <div className="my-16" key={block.id || `block-${index}`}>
                   <Block {...block} disableInnerContainer />
                 </div>
               )
