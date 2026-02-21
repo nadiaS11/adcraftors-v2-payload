@@ -55,7 +55,7 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
           ],
         },
       })
-      docs = posts.docs 
+      docs = posts.docs
     }
     if (populateBy === "service" && filterByService) {
       const posts = await payload.find({
@@ -81,7 +81,8 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
     }
   } else {
     if (selectedCaseStudies?.length) {
-      const filteredSelectedPosts = selectedCaseStudies.map((post) => {
+      const filteredSelectedPosts = selectedCaseStudies.map((post: any) => {
+        if (post?.value && typeof post.value === "object") return post.value
         if (typeof post === "object") return post
       }) as Partial<CaseStudy>[]
 
@@ -94,8 +95,10 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
     isFeatured && featuredCaseStudy ? featuredCaseStudy : isFeatured ? docs[0] : null
   const otherCases =
     isFeatured && featuredCase ? docs.filter((c) => c.id !== featuredCase.id) : docs
-const caseStudies = docs.map((doc) => getCaseStudyCardData(doc)) as CaseStudyCardProps[]
-const otherCaseStudies = otherCases.map((doc) => getCaseStudyCardData(doc)) as CaseStudyCardProps[]
+  const caseStudies = docs.map((doc) => getCaseStudyCardData(doc)) as CaseStudyCardProps[]
+  const otherCaseStudies = otherCases.map((doc) =>
+    getCaseStudyCardData(doc),
+  ) as CaseStudyCardProps[]
   return (
     <section className="py-16 md:py-24" id={`block-${id}`}>
       <div className="container mx-auto px-4">

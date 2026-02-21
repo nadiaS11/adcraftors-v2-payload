@@ -22,11 +22,11 @@ import { linkGroup } from "../../fields/linkGroup"
  * - Settings: Grid columns, style options
  */
 export const ServicesGrid: Block = {
-  slug: "services-grid",
+  slug: "srvgrd",
   interfaceName: "ServicesGridBlock",
   labels: {
-    singular: "Services Grid",
-    plural: "Services Grids",
+    singular: "Services Section",
+    plural: "Services Sections",
   },
   fields: [
     {
@@ -35,8 +35,9 @@ export const ServicesGrid: Block = {
       defaultValue: "grid",
       required: true,
       options: [
-        { label: "Featured + Grid", value: "feat" },
+        { label: "Featured + Grid", value: "both" },
         { label: "Grid Only", value: "grid" },
+        { label: "Featured Only", value: "feat" },
       ],
       admin: {
         description:
@@ -47,7 +48,7 @@ export const ServicesGrid: Block = {
       name: "title",
       type: "text",
       admin: {
-        condition: (_, siblingData) => siblingData.type === "grid",
+        condition: (_, siblingData) => ["both", "grid"].includes(siblingData.type),
       },
     },
     linkGroup({
@@ -58,7 +59,7 @@ export const ServicesGrid: Block = {
         required: false,
         maxRows: 1,
         admin: {
-          condition: (_, siblingData) => siblingData.type === "grid",
+          condition: (_, siblingData) => ["both", "grid"].includes(siblingData.type),
         },
       },
     }),
@@ -91,17 +92,6 @@ export const ServicesGrid: Block = {
             placeholder: 'e.g., "Our Services"',
           },
         },
-        {
-          name: "description",
-          type: "richText",
-          editor: lexicalEditor({
-            features: ({ rootFeatures }) => [
-              ...rootFeatures,
-              FixedToolbarFeature(),
-              InlineToolbarFeature(),
-            ],
-          }),
-        },
       ],
     },
     {
@@ -110,9 +100,8 @@ export const ServicesGrid: Block = {
       defaultValue: "selection",
       options: [
         { label: "Select Specific Services", value: "selection" },
-        { label: "Show All Services", value: "all" },
-        { label: "Featured Services Only", value: "featured" },
-        { label: "By Category", value: "category" },
+        { label: "Services Collection", value: "collection" },
+        { label: "Recent Services", value: "recents" },
       ],
     },
     {
@@ -125,21 +114,7 @@ export const ServicesGrid: Block = {
         description: "Select the services to display",
       },
     },
-    {
-      name: "category",
-      type: "select",
-      admin: {
-        condition: (_, siblingData) => siblingData?.populateBy === "category",
-      },
-      options: [
-        { label: "Branding", value: "branding" },
-        { label: "Web Design & Development", value: "web" },
-        { label: "SEO", value: "seo" },
-        { label: "Paid Advertising", value: "advertising" },
-        { label: "Content Marketing", value: "content" },
-        { label: "Social Media", value: "social" },
-      ],
-    },
+
     {
       name: "limit",
       type: "number",

@@ -16,7 +16,6 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
     header,
     populateBy,
     selectedServices,
-    category,
     limit = 6,
     settings,
     cta,
@@ -35,13 +34,14 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
 
   if (populateBy === "selection" && selectedServices?.length) {
     services = selectedServices
-      .map((service) => {
+      .map((service: any) => {
+        if (service?.value && typeof service.value === "object") return service.value
         if (typeof service === "object") return service
       })
       .filter(Boolean) as Service[]
   }
 
-  if (populateBy === "category" && category) {
+  if (populateBy === "recents") {
     const payload = await getPayload({ config: configPromise })
 
     const result = await payload.find({
@@ -50,7 +50,7 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
       limit: limitFromProps,
       where: {
         and: [
-          { category: { equals: category } },
+          { _status: { equals: "published" } },
           ...(featDoc && typeof featDoc.value === "object"
             ? [{ id: { not_equals: featDoc.value.id } }]
             : []),
@@ -60,7 +60,7 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
     services = result.docs
   }
 
-  if (populateBy === "featured") {
+  if (populateBy === "collection") {
     const payload = await getPayload({ config: configPromise })
 
     const result = await payload.find({
@@ -69,7 +69,7 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
       limit: limitFromProps,
       where: {
         and: [
-          { category: { equals: "featured" as any } },
+          { _status: { equals: "published" } },
           ...(featDoc && typeof featDoc.value === "object"
             ? [{ id: { not_equals: featDoc.value.id } }]
             : []),
@@ -82,7 +82,17 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
   return (
     <section className="py-16 md:py-24" id={`block-${id}`}>
       <div className="container mx-auto px-4">
-        {type === "feat" && featuredService && (
+        {(type === "grid" || type === "both") && (title || headerLinks?.length) && (
+          <div className="mb-12">
+            <div className="flex flex-wrap items-center justify-between">
+              <h3 className="text-2xl md:text-3xl font-bold">{title}</h3>
+              {headerLinks?.map((headerLink) => (
+                <CMSLink key={headerLink.id} {...headerLink.link} appearance="inline" />
+              ))}
+            </div>
+          </div>
+        )}
+        {(type === "feat" || type === "both") && featuredService && (
           <div className="grid lg:grid-cols-2 gap-8 mb-16">
             <div className="relative aspect-video lg:aspect-auto rounded-2xl overflow-hidden">
               {featuredService.featuredImage &&
@@ -106,24 +116,13 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
           </div>
         )}
 
-        {type === "grid" && (title || headerLinks?.length) && (
-          <div className="mb-12">
-            <div className="flex flex-wrap items-center justify-between">
-              <h3 className="text-2xl md:text-3xl font-bold">{title}</h3>
-              {headerLinks?.map((headerLink) => (
-                <CMSLink key={headerLink.id} {...headerLink.link} appearance="inline" />
-              ))}
-            </div>
-          </div>
-        )}
-
         {(!type || type === "grid") && (header?.eyebrow || header?.headline) && (
           <HeadingFeature
             header={{ eyebrow: props.header.eyebrow ?? "", headline: props.header.headline ?? "" }}
           />
         )}
 
-        {type === "grid" && (
+        {(type === "grid" || type === "both") && (
           <ServicesCollection
             services={services}
             columns={columns}

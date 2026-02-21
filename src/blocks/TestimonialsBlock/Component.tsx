@@ -7,36 +7,8 @@ import { getPayload } from "payload"
 import { TestimonialCollection } from "@/components/TestimonialCollection"
 import HeadingFeature from "@/components/HeadingFeature"
 
-async function getTestimonials(
-  populateBy: string,
-  selectedTestimonials: any[],
-  limit: number,
-): Promise<Testimonial[]> {
-  const payload = await getPayload({ config: configPromise })
-
-  if (populateBy === "selection" && selectedTestimonials?.length) {
-    return selectedTestimonials
-      .map((testimonial) => {
-        if (typeof testimonial.value === "object") return testimonial.value
-      })
-      .filter(Boolean) as Testimonial[]
-  }
-
-  const result = await payload.find({
-    collection: "testimonials",
-    depth: 1,
-    limit,
-  })
-
-  return result.docs
-}
-
-type Props = TestimonialsBlockType & {
-  testimonials?: Testimonial[]
-}
-
-export const TestimonialsBlock: React.FC<Props> = async (props) => {
-  const { populateBy, selectedTestimonials, limit = 3, settings } = props
+export const TestimonialsBlock: React.FC<TestimonialsBlockType> = async (props) => {
+  const { populateBy, selectedTestimonials, limit = 3, settings, featDoc, type } = props
 
   const layout = settings?.layout || "slider"
   const showRating = settings?.showRating ?? true
@@ -44,11 +16,48 @@ export const TestimonialsBlock: React.FC<Props> = async (props) => {
 
   const limitFromProps = limit ?? 3
 
-  const testimonials = await getTestimonials(
-    populateBy || "selection",
-    selectedTestimonials || [],
-    limitFromProps,
-  )
+  let docs: Testimonial[] = []
+  const feaaturedDoc = typeof featDoc?.value === "object" && featDoc?.value
+
+  if (populateBy === "collection" || populateBy === "recents") {
+    const payload = await getPayload({ config: configPromise })
+
+    if (populateBy === "collection") {
+      const testimonials = await payload.find({
+        collection: "testimonials",
+        depth: 1,
+        limit: limitFromProps,
+        where: {
+          and: [
+            ...(type === "feat" && feaaturedDoc ? [{ id: { not_equals: feaaturedDoc?.id } }] : []),
+          ],
+        },
+      })
+      docs = testimonials.docs
+    }
+    if (populateBy === "recents") {
+      const testimonials = await payload.find({
+        collection: "testimonials",
+        depth: 1,
+        limit: limitFromProps,
+        sort: "-updatedAt",
+        where: {
+          and: [
+            ...(type === "feat" && feaaturedDoc ? [{ id: { not_equals: feaaturedDoc.id } }] : []),
+          ],
+        },
+      })
+      docs = testimonials.docs
+    }
+  } else {
+    if (selectedTestimonials?.length) {
+      const filteredSelectedTestimonials = selectedTestimonials.map((testimonial) => {
+        if (typeof testimonial === "object") return testimonial
+      }) as Partial<Testimonial>[]
+
+      docs = filteredSelectedTestimonials as Testimonial[]
+    }
+  }
 
   return (
     <section className="py-16 md:py-24 bg-neutral-50 dark:bg-neutral-900">
@@ -60,7 +69,7 @@ export const TestimonialsBlock: React.FC<Props> = async (props) => {
         )}
 
         <TestimonialCollection
-          testimonials={testimonials}
+          testimonials={docs}
           layout={layout}
           showRating={showRating}
           showPhoto={showPhoto}

@@ -1262,7 +1262,7 @@ export interface ServicesGridBlock {
   /**
    * Selecting "Featured + Grid" means other services will appear in right side of the featured service.
    */
-  type: 'feat' | 'grid';
+  type: 'both' | 'grid' | 'feat';
   title?: string | null;
   link?:
     | {
@@ -1299,28 +1299,12 @@ export interface ServicesGridBlock {
   header: {
     eyebrow?: string | null;
     headline: string;
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
   };
-  populateBy?: ('selection' | 'all' | 'featured' | 'category') | null;
+  populateBy?: ('selection' | 'collection' | 'recents') | null;
   /**
    * Select the services to display
    */
   selectedServices?: (number | Service)[] | null;
-  category?: ('branding' | 'web' | 'seo' | 'advertising' | 'content' | 'social') | null;
   /**
    * Maximum number of services to display
    */
@@ -1367,7 +1351,7 @@ export interface ServicesGridBlock {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: 'services-grid';
+  blockType: 'srvgrd';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1520,23 +1504,8 @@ export interface TestimonialsBlock {
   header?: {
     eyebrow?: string | null;
     headline?: string | null;
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
   };
-  populateBy?: ('selection' | 'featured' | 'all') | null;
+  populateBy?: ('selection' | 'collection' | 'recents') | null;
   selectedTestimonials?: (number | Testimonial)[] | null;
   limit?: number | null;
   settings?: {
@@ -1544,9 +1513,7 @@ export interface TestimonialsBlock {
     showRating?: boolean | null;
     showPhoto?: boolean | null;
     showCompanyLogo?: boolean | null;
-    autoplay?: boolean | null;
   };
-  pagination?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials-block';
@@ -2561,7 +2528,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        'services-grid'?: T | ServicesGridBlockSelect<T>;
+        srvgrd?: T | ServicesGridBlockSelect<T>;
         casest?: T | CaseStudiesShowcaseBlockSelect<T>;
         'testimonials-block'?: T | TestimonialsBlockSelect<T>;
         'text-with-image'?: T | TextWithImageBlockSelect<T>;
@@ -2718,11 +2685,9 @@ export interface ServicesGridBlockSelect<T extends boolean = true> {
     | {
         eyebrow?: T;
         headline?: T;
-        description?: T;
       };
   populateBy?: T;
   selectedServices?: T;
-  category?: T;
   limit?: T;
   settings?:
     | T
@@ -2838,7 +2803,6 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
     | {
         eyebrow?: T;
         headline?: T;
-        description?: T;
       };
   populateBy?: T;
   selectedTestimonials?: T;
@@ -2850,9 +2814,7 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
         showRating?: T;
         showPhoto?: T;
         showCompanyLogo?: T;
-        autoplay?: T;
       };
-  pagination?: T;
   id?: T;
   blockName?: T;
 }

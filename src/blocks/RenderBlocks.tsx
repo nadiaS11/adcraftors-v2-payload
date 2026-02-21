@@ -12,7 +12,7 @@ import { MediaBlock } from "@/blocks/MediaBlock/Component"
 import { ServicesGridBlockComponent } from "@/blocks/ServicesGrid/Component"
 import { StatsBlockComponent } from "@/blocks/StatsBlock/Component"
 import { TextWithImageBlockComponent } from "@/blocks/TextWithImage/Component"
-import { TestimonialsBlockComponent } from "@/blocks/TestimonialsBlock/Component"
+import { TestimonialsBlock } from "@/blocks/TestimonialsBlock/Component"
 import { FAQBlockComponent } from "@/blocks/FAQBlock/Component"
 import { CaseStudiesShowcaseComponent } from "@/blocks/CaseStudiesShowcase/Component"
 
@@ -25,10 +25,10 @@ const blockComponents: Record<string, React.FC<any>> = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   // Marketing agency blocks
-  "services-grid": ServicesGridBlockComponent,
+  srvgrd: ServicesGridBlockComponent,
   "stats-block": StatsBlockComponent,
   "text-with-image": TextWithImageBlockComponent,
-  "testimonials-block": TestimonialsBlockComponent,
+  "testimonials-block": TestimonialsBlock,
   "faq-block": FAQBlockComponent,
   casest: CaseStudiesShowcaseComponent,
   "hero-block": () => null,

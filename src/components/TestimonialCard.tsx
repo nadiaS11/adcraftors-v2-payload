@@ -46,7 +46,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({
       whileHover={cardHover}
       className={cn(
         "bg-white dark:bg-neutral-800 rounded-2xl p-6 md:p-8 shadow-md",
-        layout === "slider" && "flex-shrink-0 w-80 md:w-96 snap-center",
+        layout === "slider" && "shrink-0 w-80 md:w-96 snap-center",
       )}
     >
       {showRating && testimonial.rating && (

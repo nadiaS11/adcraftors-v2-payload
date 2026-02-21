@@ -188,7 +188,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
       {showLearnMore && (
         <a
           href={`/services`}
-          className="inline-flex items-center text-primary-600 dark:text-primary-400 font-medium hover:gap-2 transition-all duration-200 group/link"
+          className="inline-flex items-center text-primary  dark:text-primary-400 font-medium hover:gap-2 transition-all duration-200 group/link"
         >
           Learn more
           <svg

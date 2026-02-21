@@ -84,17 +84,6 @@ export const TestimonialsBlock: Block = {
             placeholder: 'e.g., "What Our Clients Say"',
           },
         },
-        {
-          name: "description",
-          type: "richText",
-          editor: lexicalEditor({
-            features: ({ rootFeatures }) => [
-              ...rootFeatures,
-              FixedToolbarFeature(),
-              InlineToolbarFeature(),
-            ],
-          }),
-        },
       ],
     },
     {
@@ -103,8 +92,8 @@ export const TestimonialsBlock: Block = {
       defaultValue: "selection",
       options: [
         { label: "Select Specific Testimonials", value: "selection" },
-        { label: "Featured Testimonials", value: "featured" },
-        { label: "All Testimonials", value: "all" },
+        { label: "Testimonial Collection", value: "collection" },
+        { label: "Recent Testimonials", value: "recents" },
       ],
     },
     {
@@ -158,24 +147,7 @@ export const TestimonialsBlock: Block = {
           defaultValue: false,
           label: "Show Company Logo",
         },
-        {
-          name: "autoplay",
-          type: "checkbox",
-          defaultValue: true,
-          admin: {
-            condition: (_, siblingData) => siblingData?.layout === "slider",
-          },
-        },
       ],
-    },
-    {
-      name: "pagination",
-      label: "Allow Pagination",
-      type: "checkbox",
-      defaultValue: false,
-      admin: {
-        condition: (_, siblingData) => siblingData.type === "grid",
-      },
     },
   ],
 }
