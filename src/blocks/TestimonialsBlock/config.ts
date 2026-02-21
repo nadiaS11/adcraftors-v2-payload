@@ -1,10 +1,12 @@
-import type { Block } from 'payload'
+import type { Block } from "payload"
 
 import {
   FixedToolbarFeature,
   InlineToolbarFeature,
   lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+} from "@payloadcms/richtext-lexical"
+
+import { linkGroup } from "../../fields/linkGroup"
 
 /**
  * Testimonials Block
@@ -18,35 +20,73 @@ import {
  * - Settings: Layout style
  */
 export const TestimonialsBlock: Block = {
-  slug: 'testimonials-block',
-  interfaceName: 'TestimonialsBlock',
+  slug: "testimonials-block",
+  interfaceName: "TestimonialsBlock",
   labels: {
-    singular: 'Testimonials Section',
-    plural: 'Testimonials Sections',
+    singular: "Testimonials Section",
+    plural: "Testimonials Sections",
   },
   fields: [
     {
-      name: 'header',
-      type: 'group',
-      label: 'Section Header',
+      name: "type",
+      type: "select",
+      defaultValue: "grid",
+      required: true,
+      options: [
+        { label: "Featured + Grid", value: "feat" },
+        { label: "Grid Only", value: "grid" },
+      ],
+    },
+    {
+      name: "title",
+      type: "text",
+      admin: {
+        condition: (_, siblingData) => siblingData.type === "grid",
+      },
+    },
+    linkGroup({
+      appearances: false,
+      overrides: {
+        name: "link",
+        label: "Header Link",
+        required: false,
+        maxRows: 1,
+        admin: {
+          condition: (_, siblingData) => siblingData.type === "grid",
+        },
+      },
+    }),
+    {
+      name: "featDoc",
+      type: "relationship",
+      label: "Featured testimonial",
+      relationTo: ["testimonials"],
+      admin: {
+        condition: (_, siblingData) => siblingData.type !== "grid",
+      },
+    },
+    {
+      name: "header",
+      type: "group",
+      label: "Section Header",
       fields: [
         {
-          name: 'eyebrow',
-          type: 'text',
+          name: "eyebrow",
+          type: "text",
           admin: {
             placeholder: 'e.g., "Testimonials"',
           },
         },
         {
-          name: 'headline',
-          type: 'text',
+          name: "headline",
+          type: "text",
           admin: {
             placeholder: 'e.g., "What Our Clients Say"',
           },
         },
         {
-          name: 'description',
-          type: 'richText',
+          name: "description",
+          type: "richText",
           editor: lexicalEditor({
             features: ({ rootFeatures }) => [
               ...rootFeatures,
@@ -58,75 +98,84 @@ export const TestimonialsBlock: Block = {
       ],
     },
     {
-      name: 'populateBy',
-      type: 'select',
-      defaultValue: 'selection',
+      name: "populateBy",
+      type: "select",
+      defaultValue: "selection",
       options: [
-        { label: 'Select Specific Testimonials', value: 'selection' },
-        { label: 'Featured Testimonials', value: 'featured' },
-        { label: 'All Testimonials', value: 'all' },
+        { label: "Select Specific Testimonials", value: "selection" },
+        { label: "Featured Testimonials", value: "featured" },
+        { label: "All Testimonials", value: "all" },
       ],
     },
     {
-      name: 'selectedTestimonials',
-      type: 'relationship',
-      relationTo: 'testimonials',
+      name: "selectedTestimonials",
+      type: "relationship",
+      relationTo: "testimonials",
       hasMany: true,
       admin: {
-        condition: (_, siblingData) => siblingData?.populateBy === 'selection',
+        condition: (_, siblingData) => siblingData?.populateBy === "selection",
       },
     },
     {
-      name: 'limit',
-      type: 'number',
+      name: "limit",
+      type: "number",
       defaultValue: 3,
       admin: {
-        condition: (_, siblingData) => siblingData?.populateBy !== 'selection',
+        condition: (_, siblingData) => siblingData?.populateBy !== "selection",
       },
     },
     {
-      name: 'settings',
-      type: 'group',
-      label: 'Display Settings',
+      name: "settings",
+      type: "group",
+      label: "Display Settings",
       fields: [
         {
-          name: 'layout',
-          type: 'select',
-          defaultValue: 'slider',
+          name: "layout",
+          type: "select",
+          defaultValue: "slider",
           options: [
-            { label: 'Slider/Carousel', value: 'slider' },
-            { label: 'Grid', value: 'grid' },
-            { label: 'Single Featured', value: 'single' },
-            { label: 'Stacked Cards', value: 'stacked' },
+            { label: "Slider/Carousel", value: "slider" },
+            { label: "Grid", value: "grid" },
+            { label: "Single Featured", value: "single" },
+            { label: "Stacked Cards", value: "stacked" },
           ],
         },
         {
-          name: 'showRating',
-          type: 'checkbox',
+          name: "showRating",
+          type: "checkbox",
           defaultValue: true,
-          label: 'Show Star Rating',
+          label: "Show Star Rating",
         },
         {
-          name: 'showPhoto',
-          type: 'checkbox',
+          name: "showPhoto",
+          type: "checkbox",
           defaultValue: true,
-          label: 'Show Author Photo',
+          label: "Show Author Photo",
         },
         {
-          name: 'showCompanyLogo',
-          type: 'checkbox',
+          name: "showCompanyLogo",
+          type: "checkbox",
           defaultValue: false,
-          label: 'Show Company Logo',
+          label: "Show Company Logo",
         },
         {
-          name: 'autoplay',
-          type: 'checkbox',
+          name: "autoplay",
+          type: "checkbox",
           defaultValue: true,
           admin: {
-            condition: (_, siblingData) => siblingData?.layout === 'slider',
+            condition: (_, siblingData) => siblingData?.layout === "slider",
           },
         },
       ],
+    },
+    {
+      name: "pagination",
+      label: "Allow Pagination",
+      type: "checkbox",
+      defaultValue: false,
+      admin: {
+        condition: (_, siblingData) => siblingData.type === "grid",
+      },
     },
   ],
 }

@@ -1,19 +1,20 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react"
 
-import type { Page } from '@/payload-types'
+import type { Page } from "@/payload-types"
 
-import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
-import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ArchiveBlock } from "@/blocks/ArchiveBlock/Component"
+import { CallToActionBlock } from "@/blocks/CallToAction/Component"
+import { ContentBlock } from "@/blocks/Content/Component"
+import { FormBlock } from "@/blocks/Form/Component"
+import { MediaBlock } from "@/blocks/MediaBlock/Component"
 
 // New Marketing Agency Block Components
-import { ServicesGridBlockComponent } from '@/blocks/ServicesGrid/Component'
-import { StatsBlockComponent } from '@/blocks/StatsBlock/Component'
-import { TextWithImageBlockComponent } from '@/blocks/TextWithImage/Component'
-import { TestimonialsBlockComponent } from '@/blocks/TestimonialsBlock/Component'
-import { FAQBlockComponent } from '@/blocks/FAQBlock/Component'
+import { ServicesGridBlockComponent } from "@/blocks/ServicesGrid/Component"
+import { StatsBlockComponent } from "@/blocks/StatsBlock/Component"
+import { TextWithImageBlockComponent } from "@/blocks/TextWithImage/Component"
+import { TestimonialsBlockComponent } from "@/blocks/TestimonialsBlock/Component"
+import { FAQBlockComponent } from "@/blocks/FAQBlock/Component"
+import { CaseStudiesShowcaseComponent } from "@/blocks/CaseStudiesShowcase/Component"
 
 // Block component mapping
 const blockComponents: Record<string, React.FC<any>> = {
@@ -24,22 +25,21 @@ const blockComponents: Record<string, React.FC<any>> = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   // Marketing agency blocks
-  'services-grid': ServicesGridBlockComponent,
-  'stats-block': StatsBlockComponent,
-  'text-with-image': TextWithImageBlockComponent,
-  'testimonials-block': TestimonialsBlockComponent,
-  'faq-block': FAQBlockComponent,
-  // Placeholder components for blocks not yet implemented
-  'hero-block': () => null,
-  'case-studies-showcase': () => null,
-  'cta-section': () => null,
-  'team-grid': () => null,
-  'clients-logo-grid': () => null,
-  'blog-preview': () => null,
+  "services-grid": ServicesGridBlockComponent,
+  "stats-block": StatsBlockComponent,
+  "text-with-image": TextWithImageBlockComponent,
+  "testimonials-block": TestimonialsBlockComponent,
+  "faq-block": FAQBlockComponent,
+  casest: CaseStudiesShowcaseComponent,
+  "hero-block": () => null,
+  "cta-section": () => null,
+  "team-grid": () => null,
+  "clients-logo-grid": () => null,
+  "blog-preview": () => null,
 }
 
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
+  blocks: Page["layout"][0][]
 }> = (props) => {
   const { blocks } = props
 

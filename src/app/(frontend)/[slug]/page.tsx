@@ -40,6 +40,7 @@ export async function generateStaticParams() {
 type Args = {
   params: Promise<{
     slug?: string
+    page: string
   }>
 }
 

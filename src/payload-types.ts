@@ -1003,24 +1003,45 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
+  /**
+   * Selecting "Featured type" means other blogs will appear in right side of the featured Blog.
+   */
+  type: 'feat' | 'grid';
+  title?: string | null;
+  link?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
+              } | null)
+            | ({
+                relationTo: 'case-studies';
+                value: number | CaseStudy;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  featDoc?: {
+    relationTo: 'posts';
+    value: number | Post;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
+  relationTo?: ('posts' | 'recent_posts') | null;
   limit?: number | null;
   selectedDocs?:
     | {
@@ -1028,6 +1049,7 @@ export interface ArchiveBlock {
         value: number | Post;
       }[]
     | null;
+  pagination?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -1237,6 +1259,43 @@ export interface Form {
  * via the `definition` "ServicesGridBlock".
  */
 export interface ServicesGridBlock {
+  /**
+   * Selecting "Featured + Grid" means other services will appear in right side of the featured service.
+   */
+  type: 'feat' | 'grid';
+  title?: string | null;
+  link?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
+              } | null)
+            | ({
+                relationTo: 'case-studies';
+                value: number | CaseStudy;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  featDoc?: {
+    relationTo: 'services';
+    value: number | Service;
+  } | null;
   header: {
     eyebrow?: string | null;
     headline: string;
@@ -1272,6 +1331,7 @@ export interface ServicesGridBlock {
     showExcerpt?: boolean | null;
     showLearnMore?: boolean | null;
   };
+  pagination?: boolean | null;
   /**
    * Optional call-to-action below the grid
    */
@@ -1314,6 +1374,43 @@ export interface ServicesGridBlock {
  * via the `definition` "CaseStudiesShowcaseBlock".
  */
 export interface CaseStudiesShowcaseBlock {
+  /**
+   * Selecting "Featured + Grid" means other case studies will appear in right side of the featured one.
+   */
+  type: 'feat' | 'grid';
+  title?: string | null;
+  link?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
+              } | null)
+            | ({
+                relationTo: 'case-studies';
+                value: number | CaseStudy;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  featDoc?: {
+    relationTo: 'case-studies';
+    value: number | CaseStudy;
+  } | null;
   header: {
     eyebrow?: string | null;
     headline: string;
@@ -1333,7 +1430,7 @@ export interface CaseStudiesShowcaseBlock {
       [k: string]: unknown;
     } | null;
   };
-  populateBy?: ('selection' | 'all' | 'featured' | 'service') | null;
+  populateBy?: ('selection' | 'recents' | 'service') | null;
   selectedCaseStudies?: (number | CaseStudy)[] | null;
   /**
    * Show case studies for this service
@@ -1346,6 +1443,7 @@ export interface CaseStudiesShowcaseBlock {
     showServices?: boolean | null;
     showExcerpt?: boolean | null;
   };
+  pagination?: boolean | null;
   cta?: {
     enabled?: boolean | null;
     link?: {
@@ -1378,13 +1476,47 @@ export interface CaseStudiesShowcaseBlock {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: 'case-studies-showcase';
+  blockType: 'casest';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TestimonialsBlock".
  */
 export interface TestimonialsBlock {
+  type: 'feat' | 'grid';
+  title?: string | null;
+  link?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'services';
+                value: number | Service;
+              } | null)
+            | ({
+                relationTo: 'case-studies';
+                value: number | CaseStudy;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  featDoc?: {
+    relationTo: 'testimonials';
+    value: number | Testimonial;
+  } | null;
   header?: {
     eyebrow?: string | null;
     headline?: string | null;
@@ -1414,6 +1546,7 @@ export interface TestimonialsBlock {
     showCompanyLogo?: boolean | null;
     autoplay?: boolean | null;
   };
+  pagination?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials-block';
@@ -2429,7 +2562,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         'services-grid'?: T | ServicesGridBlockSelect<T>;
-        'case-studies-showcase'?: T | CaseStudiesShowcaseBlockSelect<T>;
+        casest?: T | CaseStudiesShowcaseBlockSelect<T>;
         'testimonials-block'?: T | TestimonialsBlockSelect<T>;
         'text-with-image'?: T | TextWithImageBlockSelect<T>;
         'stats-block'?: T | StatsBlockSelect<T>;
@@ -2522,12 +2655,28 @@ export interface MediaBlockSelect<T extends boolean = true> {
  * via the `definition` "ArchiveBlock_select".
  */
 export interface ArchiveBlockSelect<T extends boolean = true> {
-  introContent?: T;
+  type?: T;
+  title?: T;
+  link?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  featDoc?: T;
   populateBy?: T;
   relationTo?: T;
-  categories?: T;
   limit?: T;
   selectedDocs?: T;
+  pagination?: T;
   id?: T;
   blockName?: T;
 }
@@ -2547,6 +2696,23 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "ServicesGridBlock_select".
  */
 export interface ServicesGridBlockSelect<T extends boolean = true> {
+  type?: T;
+  title?: T;
+  link?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  featDoc?: T;
   header?:
     | T
     | {
@@ -2566,6 +2732,7 @@ export interface ServicesGridBlockSelect<T extends boolean = true> {
         showExcerpt?: T;
         showLearnMore?: T;
       };
+  pagination?: T;
   cta?:
     | T
     | {
@@ -2589,6 +2756,23 @@ export interface ServicesGridBlockSelect<T extends boolean = true> {
  * via the `definition` "CaseStudiesShowcaseBlock_select".
  */
 export interface CaseStudiesShowcaseBlockSelect<T extends boolean = true> {
+  type?: T;
+  title?: T;
+  link?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  featDoc?: T;
   header?:
     | T
     | {
@@ -2608,6 +2792,7 @@ export interface CaseStudiesShowcaseBlockSelect<T extends boolean = true> {
         showServices?: T;
         showExcerpt?: T;
       };
+  pagination?: T;
   cta?:
     | T
     | {
@@ -2631,6 +2816,23 @@ export interface CaseStudiesShowcaseBlockSelect<T extends boolean = true> {
  * via the `definition` "TestimonialsBlock_select".
  */
 export interface TestimonialsBlockSelect<T extends boolean = true> {
+  type?: T;
+  title?: T;
+  link?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  featDoc?: T;
   header?:
     | T
     | {
@@ -2650,6 +2852,7 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
         showCompanyLogo?: T;
         autoplay?: T;
       };
+  pagination?: T;
   id?: T;
   blockName?: T;
 }
