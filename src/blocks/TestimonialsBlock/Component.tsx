@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import React from 'react'
-import { motion } from 'framer-motion'
-import { cn } from '@/utilities/ui'
-import { fadeInUp, staggerContainer, defaultViewport, cardHover } from '@/lib/animations/variants'
-import type { TestimonialsBlock as TestimonialsBlockType, Testimonial } from '@/payload-types'
+import React from "react"
+import { motion } from "framer-motion"
+import { cn } from "@/utilities/ui"
+import { fadeInUp, staggerContainer, defaultViewport, cardHover } from "@/lib/animations/variants"
+import type { TestimonialsBlock as TestimonialsBlockType, Testimonial } from "@/payload-types"
 
 type Props = TestimonialsBlockType & {
   testimonials?: Testimonial[]
@@ -15,7 +15,7 @@ export const TestimonialsBlockComponent: React.FC<Props> = ({
   settings,
   testimonials = [],
 }) => {
-  const layout = settings?.layout || 'slider'
+  const layout = settings?.layout || "slider"
   const showRating = settings?.showRating ?? true
   const showPhoto = settings?.showPhoto ?? true
 
@@ -26,13 +26,13 @@ export const TestimonialsBlockComponent: React.FC<Props> = ({
         <svg
           key={star}
           className={cn(
-            'w-5 h-5',
-            star <= rating ? 'text-yellow-400' : 'text-neutral-300 dark:text-neutral-600',
+            "w-5 h-5",
+            star <= rating ? "text-yellow-400" : "text-neutral-300 dark:text-neutral-600",
           )}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
-          <title>{star <= rating ? 'Filled star' : 'Empty star'}</title>
+          <title>{star <= rating ? "Filled star" : "Empty star"}</title>
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -73,24 +73,24 @@ export const TestimonialsBlockComponent: React.FC<Props> = ({
         {/* Testimonials Grid */}
         <motion.div
           className={cn(
-            layout === 'grid' && 'grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8',
-            layout === 'slider' && 'flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory',
-            layout === 'single' && 'max-w-3xl mx-auto',
-            layout === 'stacked' && 'space-y-6 max-w-2xl mx-auto',
+            layout === "grid" && "grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8",
+            layout === "slider" && "flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory",
+            layout === "single" && "max-w-3xl mx-auto",
+            layout === "stacked" && "space-y-6 max-w-2xl mx-auto",
           )}
           initial="hidden"
           whileInView="visible"
           viewport={defaultViewport}
           variants={staggerContainer}
         >
-          {testimonials.map((testimonial, index) => (
+          {testimonials.map((testimonial) => (
             <motion.div
               key={testimonial.id}
               variants={fadeInUp}
               whileHover={cardHover}
               className={cn(
-                'bg-white dark:bg-neutral-800 rounded-2xl p-6 md:p-8 shadow-md',
-                layout === 'slider' && 'flex-shrink-0 w-80 md:w-96 snap-center',
+                "bg-white dark:bg-neutral-800 rounded-2xl p-6 md:p-8 shadow-md",
+                layout === "slider" && "flex-shrink-0 w-80 md:w-96 snap-center",
               )}
             >
               {/* Rating */}
@@ -107,22 +107,24 @@ export const TestimonialsBlockComponent: React.FC<Props> = ({
 
               {/* Author */}
               <div className="flex items-center gap-4">
-                {showPhoto &&
-                  testimonial.author?.photo &&
-                  typeof testimonial.author.photo === 'object' && (
-                    <div className="w-12 h-12 rounded-full bg-neutral-200 dark:bg-neutral-700 overflow-hidden flex-shrink-0">
-                      {/* Image would go here */}
-                    </div>
-                  )}
+                {showPhoto && testimonial.headshot && typeof testimonial.headshot === "object" && (
+                  <div className="w-12 h-12 rounded-full bg-neutral-200 dark:bg-neutral-700 overflow-hidden flex-shrink-0">
+                    <img
+                      src={testimonial.headshot.url || ""}
+                      alt={testimonial.author}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <div>
                   <div className="font-semibold text-neutral-900 dark:text-white">
-                    {testimonial.author?.name}
+                    {testimonial.author}
                   </div>
-                  {(testimonial.author?.role || testimonial.author?.company) && (
+                  {(testimonial.role || testimonial.company) && (
                     <div className="text-sm text-neutral-500 dark:text-neutral-400">
-                      {testimonial.author?.role}
-                      {testimonial.author?.role && testimonial.author?.company && ', '}
-                      {testimonial.author?.company}
+                      {testimonial.role}
+                      {testimonial.role && testimonial.company && ", "}
+                      {testimonial.company}
                     </div>
                   )}
                 </div>

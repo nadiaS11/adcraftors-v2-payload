@@ -84,11 +84,16 @@ export interface Config {
     search: Search;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
+    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'payload-folders': {
+      documentsAndFolders: 'payload-folders' | 'media';
+    };
+  };
   collectionsSelect: {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -107,6 +112,7 @@ export interface Config {
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -183,6 +189,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -252,6 +259,32 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders".
+ */
+export interface FolderInterface {
+  id: number;
+  name: string;
+  folder?: (number | null) | FolderInterface;
+  documentsAndFolders?: {
+    docs?: (
+      | {
+          relationTo?: 'payload-folders';
+          value: number | FolderInterface;
+        }
+      | {
+          relationTo?: 'media';
+          value: number | Media;
+        }
+    )[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  folderType?: 'media'[] | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -491,17 +524,13 @@ export interface Testimonial {
    * The testimonial text
    */
   quote: string;
-  author: {
-    name: string;
-    role?: string | null;
-    company?: string | null;
-    /**
-     * Author headshot (optional)
-     */
-    photo?: (number | null) | Media;
-  };
-  authorName?: string | null;
+  author: string;
+  role?: string | null;
   company?: string | null;
+  /**
+   * Author headshot (optional)
+   */
+  headshot?: (number | null) | Media;
   /**
    * Link to client (for logo display)
    */
@@ -510,14 +539,6 @@ export interface Testimonial {
    * Star rating (1-5)
    */
   rating?: number | null;
-  /**
-   * Feature on homepage
-   */
-  featured?: boolean | null;
-  /**
-   * Order in listings (lower = first)
-   */
-  displayOrder?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2000,6 +2021,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'search';
         value: number | Search;
+      } | null)
+    | ({
+        relationTo: 'payload-folders';
+        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -2051,6 +2076,7 @@ export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   title?: T;
   caption?: T;
+  folder?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2270,20 +2296,12 @@ export interface ServicesSelect<T extends boolean = true> {
  */
 export interface TestimonialsSelect<T extends boolean = true> {
   quote?: T;
-  author?:
-    | T
-    | {
-        name?: T;
-        role?: T;
-        company?: T;
-        photo?: T;
-      };
-  authorName?: T;
+  author?: T;
+  role?: T;
   company?: T;
+  headshot?: T;
   client?: T;
   rating?: T;
-  featured?: T;
-  displayOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3114,6 +3132,18 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders_select".
+ */
+export interface PayloadFoldersSelect<T extends boolean = true> {
+  name?: T;
+  folder?: T;
+  documentsAndFolders?: T;
+  folderType?: T;
   updatedAt?: T;
   createdAt?: T;
 }

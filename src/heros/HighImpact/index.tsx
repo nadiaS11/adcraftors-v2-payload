@@ -1,19 +1,25 @@
-'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
-import React, { useEffect } from 'react'
+"use client"
+import { useHeaderTheme } from "@/providers/HeaderTheme"
+import React, { useEffect } from "react"
 
-import type { Page } from '@/payload-types'
+import type { Page } from "@/payload-types"
 
-import { CMSLink } from '@/components/Link'
-import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
-import { Zap, ArrowRight, Palette, Rocket } from 'lucide-react'
+import { CMSLink } from "@/components/Link"
+import RichText from "@/components/RichText"
+import { Zap, ArrowRight, Palette, Rocket } from "lucide-react"
+import { Media } from "@/components/Media"
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText, headline }) => {
+export const HighImpactHero: React.FC<Page["hero"]> = ({
+  links,
+  media,
+  richText,
+  headline,
+  feats,
+}) => {
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
-    setHeaderTheme('dark')
+    setHeaderTheme("dark")
   })
 
   return (
@@ -39,7 +45,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-400">
             {links?.map((link) => (
-              <CMSLink size={'lg'} key={link.id} {...link.link} className="group">
+              <CMSLink size={"lg"} key={link.id} {...link.link} className="group text-lg">
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </CMSLink>
             ))}
@@ -47,26 +53,19 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
         </div>
 
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="text-center animate-fade-in-up animation-delay-600 group">
-            <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-              <Palette className="h-10 w-10 text-primary group-hover:text-primary-foreground" />
+          {feats?.map((item) => (
+            <div key={item.id} className="text-center animate-fade-in-up animation-delay-600 group">
+              <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                {item.icon && typeof item.icon === "object" && (
+                  <Media
+                    resource={{ ...item.icon, height: 40, width: 40 }}
+                    className="h-10 w-10 text-primary group-hover:text-primary-foreground"
+                  />
+                )}
+              </div>
+              <h3 className="font-serif font-semibold text-xl mb-3">{item?.title}</h3>
             </div>
-            <h3 className="font-serif font-semibold text-xl mb-3">Creative Design</h3>
-          </div>
-
-          <div className="text-center animate-fade-in-up animation-delay-700 group">
-            <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-              <Rocket className="h-10 w-10 text-primary group-hover:text-primary-foreground" />
-            </div>
-            <h3 className="font-serif font-semibold text-xl mb-3">Digital Strategy</h3>
-          </div>
-
-          <div className="text-center animate-fade-in-up animation-delay-800 group">
-            <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-              <Zap className="h-10 w-10 text-primary group-hover:text-primary-foreground" />
-            </div>
-            <h3 className="font-serif font-semibold text-xl mb-3">Performance Marketing</h3>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from "payload"
 
-import { authenticated } from '../../access/authenticated'
-import { anyone } from '../../access/anyone'
+import { authenticated } from "../../access/authenticated"
+import { anyone } from "../../access/anyone"
 
 /**
  * Testimonials Collection
@@ -14,10 +14,10 @@ import { anyone } from '../../access/anyone'
  * - References: Clients (who gave the testimonial)
  */
 export const Testimonials: CollectionConfig = {
-  slug: 'testimonials',
+  slug: "testimonials",
   labels: {
-    singular: 'Testimonial',
-    plural: 'Testimonials',
+    singular: "Testimonial",
+    plural: "Testimonials",
   },
   access: {
     create: authenticated,
@@ -26,132 +26,84 @@ export const Testimonials: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['authorName', 'company', 'featured', 'createdAt'],
-    useAsTitle: 'authorName',
-    group: 'Content',
-    description: 'Client testimonials and reviews',
+    defaultColumns: ["quote", "author", "company", "featured", "createdAt"],
+    group: "Content",
+    description: "Client testimonials and reviews",
+    useAsTitle: "author",
   },
   fields: [
     {
-      name: 'quote',
-      type: 'textarea',
+      name: "quote",
+      type: "textarea",
       required: true,
       admin: {
-        description: 'The testimonial text',
+        description: "The testimonial text",
       },
     },
     {
-      name: 'author',
-      type: 'group',
-      label: 'Author Information',
+      type: "collapsible",
+      label: "Author Information",
       fields: [
         {
-          type: 'row',
+          type: "row",
           fields: [
             {
-              name: 'name',
-              type: 'text',
+              name: "author",
+              type: "text",
               required: true,
               admin: {
-                width: '50%',
+                width: "50%",
               },
             },
             {
-              name: 'role',
-              type: 'text',
+              name: "role",
+              type: "text",
               admin: {
-                width: '50%',
-                placeholder: 'e.g., CEO',
+                width: "50%",
+                placeholder: "e.g., CEO",
               },
             },
           ],
         },
         {
-          type: 'row',
+          type: "row",
           fields: [
             {
-              name: 'company',
-              type: 'text',
+              name: "company",
+              type: "text",
               admin: {
-                width: '50%',
+                width: "50%",
               },
             },
             {
-              name: 'photo',
-              type: 'upload',
-              relationTo: 'media',
+              name: "headshot",
+              type: "upload",
+              relationTo: "media",
               admin: {
-                width: '50%',
-                description: 'Author headshot (optional)',
+                width: "50%",
+                description: "Author headshot (optional)",
               },
             },
           ],
         },
       ],
     },
-    // Virtual field for admin list display
+
     {
-      name: 'authorName',
-      type: 'text',
+      name: "client",
+      type: "relationship",
+      relationTo: "clients",
       admin: {
-        hidden: true,
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData }) => {
-            return siblingData?.author?.name || 'Unknown'
-          },
-        ],
+        description: "Link to client (for logo display)",
       },
     },
     {
-      name: 'company',
-      type: 'text',
-      admin: {
-        hidden: true,
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData }) => {
-            return siblingData?.author?.company || ''
-          },
-        ],
-      },
-    },
-    {
-      name: 'client',
-      type: 'relationship',
-      relationTo: 'clients',
-      admin: {
-        description: 'Link to client (for logo display)',
-      },
-    },
-    {
-      name: 'rating',
-      type: 'number',
+      name: "rating",
+      type: "number",
       min: 1,
       max: 5,
       admin: {
-        description: 'Star rating (1-5)',
-      },
-    },
-    // Sidebar fields
-    {
-      name: 'featured',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        position: 'sidebar',
-        description: 'Feature on homepage',
-      },
-    },
-    {
-      name: 'displayOrder',
-      type: 'number',
-      defaultValue: 0,
-      admin: {
-        position: 'sidebar',
-        description: 'Order in listings (lower = first)',
+        description: "Star rating (1-5)",
       },
     },
   ],
