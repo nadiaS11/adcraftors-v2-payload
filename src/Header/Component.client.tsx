@@ -15,8 +15,6 @@ interface HeaderClientProps {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
   const navigationItems = data.navItems
   const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +27,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }
 
   return (
-    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b border-border">
+    <nav className="bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b border-border">
       <div className="container-full">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -37,7 +35,45 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               href="/"
               className="text-2xl font-serif font-bold text-primary hover:text-accent transition-colors"
             >
-              AdCraftors
+              <svg
+                width="216"
+                height="40"
+                viewBox="0 0 216 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M3 34 L13.5 6 L18 14 L9.5 34 Z" fill="#ea580c" />
+
+                <path d="M33 34 L22.5 6 L18 14 L26.5 34 Z" fill="#18181b" />
+
+                <path
+                  d="M22 18.5 L15.5 18.5 L14.5 22.5 L18.5 22.5 L16.5 28.5 L24 21 L20 21 Z"
+                  fill="white"
+                />
+
+                <text
+                  x="46"
+                  y="29"
+                  fontFamily="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+                  fontWeight="800"
+                  fontSize="23"
+                  fill="#ea580c"
+                  letter-spacing="-1"
+                >
+                  Ad
+                </text>
+                <text
+                  x="76"
+                  y="29"
+                  fontFamily="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+                  fontWeight="300"
+                  fontSize="23"
+                  fill="#18181b"
+                  letter-spacing="-0.5"
+                >
+                  Craftors
+                </text>
+              </svg>
             </Link>
           </div>
 

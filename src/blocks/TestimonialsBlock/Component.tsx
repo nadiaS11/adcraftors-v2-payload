@@ -6,9 +6,19 @@ import configPromise from "@payload-config"
 import { getPayload } from "payload"
 import { TestimonialCollection } from "@/components/TestimonialCollection"
 import HeadingFeature from "@/components/HeadingFeature"
+import { CMSLink } from "@/components/Link"
 
 export const TestimonialsBlock: React.FC<TestimonialsBlockType> = async (props) => {
-  const { populateBy, selectedTestimonials, limit = 3, settings, featDoc, type } = props
+  const {
+    populateBy,
+    selectedTestimonials,
+    limit = 3,
+    settings,
+    featDoc,
+    type,
+    title,
+    link: headerLinks,
+  } = props
 
   const layout = settings?.layout || "slider"
   const showRating = settings?.showRating ?? true
@@ -60,8 +70,18 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockType> = async (props) 
   }
 
   return (
-    <section className="py-16 md:py-24 bg-neutral-50 dark:bg-neutral-900">
+    <section className="mt-16 lg:mt-32">
       <div className="container mx-auto px-4">
+        {(title?.trim() || (headerLinks?.length && headerLinks?.length > 0)) && (
+          <div className="mb-12">
+            <div className="flex flex-wrap items-center justify-between">
+              <h3 className="text-2xl md:text-3xl font-bold">{title}</h3>
+              {headerLinks?.map((headerLink) => (
+                <CMSLink key={headerLink.id} {...headerLink.link} appearance="inline" />
+              ))}
+            </div>
+          </div>
+        )}
         {props.header?.eyebrow && (
           <HeadingFeature
             header={{ eyebrow: props.header.eyebrow ?? "", headline: props.header.headline ?? "" }}

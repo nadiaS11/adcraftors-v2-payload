@@ -21,7 +21,6 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
     type,
     title,
     link: headerLinks,
-    header,
     populateBy,
     selectedCaseStudies,
     filterByService,
@@ -99,18 +98,19 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
   const caseStudies = docs.map((doc) => getCaseStudyCardData(doc)) as CaseStudyCardProps[]
 
   return (
-    <section className="py-16 md:py-24" id={`block-${id}`}>
+    <section className="mt-16 lg:mt-32">
       <div className="container mx-auto px-4">
-        {(type === "grid" || type === "both") && (title || headerLinks?.length) && (
-          <div className="mb-12">
-            <div className="flex flex-wrap items-center justify-between">
-              <h3 className="text-2xl md:text-3xl font-bold">{title}</h3>
-              {headerLinks?.map((headerLink: any) => (
-                <CMSLink key={headerLink.id} {...headerLink.link} appearance="inline" />
-              ))}
+        {(type === "grid" || type === "both") &&
+          (title?.trim() || (headerLinks?.length && headerLinks?.length > 0)) && (
+            <div className="mb-12">
+              <div className="flex flex-wrap items-center justify-between">
+                <h3 className="text-2xl md:text-3xl font-bold">{title}</h3>
+                {headerLinks?.map((headerLink) => (
+                  <CMSLink key={headerLink.id} {...headerLink.link} appearance="inline" />
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
         {type !== "grid" && featuredCaseStudy && (
           <div className="mb-16">
             <FeaturedCaseStudyCard {...featuredCaseStudy} />

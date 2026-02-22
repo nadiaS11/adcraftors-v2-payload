@@ -1,22 +1,22 @@
-'use client'
+"use client"
 
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '@/utilities/ui'
-import { fadeInUp, staggerContainer, defaultViewport } from '@/lib/animations/variants'
-import RichText from '@/components/RichText'
-import type { FAQBlock as FAQBlockType } from '@/payload-types'
+import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/utilities/ui"
+import { fadeInUp, staggerContainer, defaultViewport } from "@/lib/animations/variants"
+import RichText from "@/components/RichText"
+import type { FAQBlock as FAQBlockType } from "@/payload-types"
 
 type Props = FAQBlockType
 
 export const FAQBlockComponent: React.FC<Props> = ({ header, faqs, settings }) => {
-  const layout = settings?.layout || 'accordion'
-  const defaultOpen = settings?.defaultOpen || 'first'
+  const layout = settings?.layout || "accordion"
+  const defaultOpen = settings?.defaultOpen || "first"
   const showNumbers = settings?.showNumbers ?? false
 
   const [openItems, setOpenItems] = useState<number[]>(() => {
-    if (defaultOpen === 'first') return [0]
-    if (defaultOpen === 'all') return faqs?.map((_, i) => i) || []
+    if (defaultOpen === "first") return [0]
+    if (defaultOpen === "all") return faqs?.map((_, i) => i) || []
     return []
   })
 
@@ -27,18 +27,18 @@ export const FAQBlockComponent: React.FC<Props> = ({ header, faqs, settings }) =
   }
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="mt-16 lg:mt-32">
       <div className="container mx-auto px-4">
         <div
           className={cn(
-            layout === 'side-by-side' && 'grid lg:grid-cols-2 gap-12 lg:gap-16',
-            layout !== 'side-by-side' && 'max-w-3xl mx-auto',
+            layout === "side-by-side" && "grid lg:grid-cols-2 gap-12 lg:gap-16",
+            layout !== "side-by-side" && "max-w-3xl mx-auto",
           )}
         >
           {/* Header */}
           {(header?.eyebrow || header?.headline) && (
             <motion.div
-              className={cn(layout !== 'side-by-side' && 'text-center mb-12')}
+              className={cn(layout !== "side-by-side" && "text-center mb-12")}
               initial="hidden"
               whileInView="visible"
               viewport={defaultViewport}
@@ -66,8 +66,8 @@ export const FAQBlockComponent: React.FC<Props> = ({ header, faqs, settings }) =
           {/* FAQ Items */}
           <motion.div
             className={cn(
-              layout === 'two-columns' && 'grid md:grid-cols-2 gap-4',
-              layout !== 'two-columns' && 'space-y-4',
+              layout === "two-columns" && "grid md:grid-cols-2 gap-4",
+              layout !== "two-columns" && "space-y-4",
             )}
             initial="hidden"
             whileInView="visible"
@@ -87,7 +87,7 @@ export const FAQBlockComponent: React.FC<Props> = ({ header, faqs, settings }) =
                   <span className="flex items-center gap-3 font-medium text-neutral-900 dark:text-white">
                     {showNumbers && (
                       <span className="text-primary-600 dark:text-primary-400">
-                        {String(index + 1).padStart(2, '0')}.
+                        {String(index + 1).padStart(2, "0")}.
                       </span>
                     )}
                     {faq.question}
@@ -118,9 +118,9 @@ export const FAQBlockComponent: React.FC<Props> = ({ header, faqs, settings }) =
                   {openItems.includes(index) && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
                       <div className="p-5 pt-0 bg-white dark:bg-neutral-800">

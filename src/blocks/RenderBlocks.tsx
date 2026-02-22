@@ -9,7 +9,7 @@ import { FormBlock } from "@/blocks/Form/Component"
 import { MediaBlock } from "@/blocks/MediaBlock/Component"
 
 // New Marketing Agency Block Components
-import { ServicesGridBlockComponent } from "@/blocks/ServicesGrid/Component"
+import { ServicesGridBlock } from "@/blocks/ServicesGrid/Component"
 import { StatsBlockComponent } from "@/blocks/StatsBlock/Component"
 import { TextWithImageBlockComponent } from "@/blocks/TextWithImage/Component"
 import { TestimonialsBlock } from "@/blocks/TestimonialsBlock/Component"
@@ -25,7 +25,7 @@ const blockComponents: Record<string, React.FC<any>> = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   // Marketing agency blocks
-  srvgrd: ServicesGridBlockComponent,
+  srvgrd: ServicesGridBlock,
   "stats-block": StatsBlockComponent,
   "text-with-image": TextWithImageBlockComponent,
   "testimonials-block": TestimonialsBlock,
@@ -55,11 +55,7 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
-              return (
-                <div className="my-16" key={block.id || `block-${index}`}>
-                  <Block {...block} disableInnerContainer />
-                </div>
-              )
+              return <Block key={block.id || `block-${index}`} {...block} disableInnerContainer />
             }
           }
           return null

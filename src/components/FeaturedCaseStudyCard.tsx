@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import { Media } from "@/components/Media"
 import type { CaseStudy } from "@/payload-types"

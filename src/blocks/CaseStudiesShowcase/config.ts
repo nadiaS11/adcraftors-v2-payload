@@ -36,9 +36,6 @@ export const CaseStudiesShowcase: Block = {
     {
       name: "title",
       type: "text",
-      admin: {
-        condition: (_, siblingData) => siblingData.type === "grid",
-      },
     },
     linkGroup({
       appearances: false,
@@ -61,39 +58,7 @@ export const CaseStudiesShowcase: Block = {
         condition: (_, siblingData) => siblingData.type !== "grid",
       },
     },
-    {
-      name: "header",
-      type: "group",
-      label: "Section Header",
-      fields: [
-        {
-          name: "eyebrow",
-          type: "text",
-          admin: {
-            placeholder: 'e.g., "Our Work"',
-          },
-        },
-        {
-          name: "headline",
-          type: "text",
-          required: true,
-          admin: {
-            placeholder: 'e.g., "Featured Projects"',
-          },
-        },
-        {
-          name: "description",
-          type: "richText",
-          editor: lexicalEditor({
-            features: ({ rootFeatures }) => [
-              ...rootFeatures,
-              FixedToolbarFeature(),
-              InlineToolbarFeature(),
-            ],
-          }),
-        },
-      ],
-    },
+
     {
       name: "populateBy",
       type: "select",

@@ -74,7 +74,7 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
       />
 
       {/* ── Content — dark text on light glass ── */}
-      <div className="container-standard relative z-10 py-32">
+      <div className="container-standard relative z-10 pt-40 pb-28">
         <div className="text-center">
           {/* Headline pill — solid primary, matches screenshot exactly */}
           <div className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold mb-6 animate-fade-in-up">

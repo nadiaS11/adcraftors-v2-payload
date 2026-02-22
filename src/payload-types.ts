@@ -907,7 +907,6 @@ export interface CallToActionBlock {
   style?: ('gradient' | 'solid' | 'image' | 'transparent') | null;
   backgroundImage?: (number | null) | Media;
   fullWidth?: boolean | null;
-  padding?: ('small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -1377,25 +1376,6 @@ export interface CaseStudiesShowcaseBlock {
     relationTo: 'case-studies';
     value: number | CaseStudy;
   } | null;
-  header: {
-    eyebrow?: string | null;
-    headline: string;
-    description?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-  };
   populateBy?: ('selection' | 'recents' | 'service') | null;
   selectedCaseStudies?: (number | CaseStudy)[] | null;
   /**
@@ -2538,7 +2518,6 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
   style?: T;
   backgroundImage?: T;
   fullWidth?: T;
-  padding?: T;
   id?: T;
   blockName?: T;
 }
@@ -2698,13 +2677,6 @@ export interface CaseStudiesShowcaseBlockSelect<T extends boolean = true> {
         id?: T;
       };
   featDoc?: T;
-  header?:
-    | T
-    | {
-        eyebrow?: T;
-        headline?: T;
-        description?: T;
-      };
   populateBy?: T;
   selectedCaseStudies?: T;
   filterByService?: T;
@@ -3310,6 +3282,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  logo?: (number | null) | Media;
   navItems?:
     | {
         link: {
@@ -3347,6 +3320,7 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  logo?: (number | null) | Media;
   navItems?:
     | {
         link: {
@@ -3494,6 +3468,7 @@ export interface DefaultSeo {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
   navItems?:
     | T
     | {
@@ -3517,6 +3492,7 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
   navItems?:
     | T
     | {

@@ -60,7 +60,8 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
       asChild
       className={cn(
         "font-medium  border-primary",
-        appearance === "outline" && "text-primary",
+        appearance === "outline" && "text-primary ",
+        appearance === "default" && "hover:text-primary hover:bg-background",
         className,
       )}
       size={size}

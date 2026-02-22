@@ -82,7 +82,7 @@ export const ArchiveBlock: React.FC<
     }
   }
   return (
-    <div className="my-16" id={`block-${id}`}>
+    <section className="mt-16 lg:mt-32" id={`block-${id}`}>
       <div className="container">
         {type === "feat" && feaaturedDoc && (
           <div className="grid lg:grid-cols-2 gap-8 mb-12">
@@ -138,6 +138,6 @@ export const ArchiveBlock: React.FC<
           <Pagination page={sanitizedPageNumber} totalPages={totalPages} />
         )}
       </div>
-    </div>
+    </section>
   )
 }

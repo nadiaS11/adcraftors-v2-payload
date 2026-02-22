@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { motion } from "framer-motion"
 import { cn } from "@/utilities/ui"
 import { Media } from "@/components/Media"
 import type { CaseStudy } from "@/payload-types"
@@ -36,7 +35,7 @@ export const CaseStudyCard: React.FC<CaseStudy> = ({
           className="absolute top-4 bg-white text-primary left-4 text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
           // style={{ background:  color, color:  accent }}
         >
-          Case Stydy
+          Case Study
         </span>
       </div>
 
