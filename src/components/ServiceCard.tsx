@@ -224,15 +224,49 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         </div>
       )}
 
-      {style === "image-cards" && service.featuredImage && (
-        <div className="relative ">
-          <Media
-            resource={service.featuredImage}
-            imgClassName="w-full h-full object-cover rounded-2xl group-hover:brightness-50 transition-all duration-300"
-          />
-          <h3 className="absolute bottom-4 left-4 text-lg font-semibold text-white group-hover:text-primary dark:text-white">
-            {service.title || "Service Title"}
-          </h3>
+      {style === "image-cards" && (
+        <div className="relative h-full min-h-70 group overflow-hidden rounded-xl">
+          {service.featuredImage ? (
+            <Media
+              resource={service.featuredImage}
+              imgClassName="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-linear-to-br from-neutral-800 to-neutral-900" />
+          )}
+
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+
+          <div className="absolute inset-0 p-6 flex flex-col justify-end">
+            <div className="transform transition-transform duration-500 translate-y-10 group-hover:-translate-y-2">
+              <h3 className="text-xl font-bold text-white mb-2">
+                {service.title || "Service Title"}
+              </h3>
+              {showExcerpt && service.excerpt && (
+                <p className="text-sm text-neutral-300 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {service.excerpt}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+            <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
       )}
     </motion.a>

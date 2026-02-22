@@ -1,10 +1,15 @@
 import React from "react"
 import { CMSLink } from "@/components/Link"
-import type { ServicesGridBlock as ServicesGridBlockType, Service } from "@/payload-types"
+import type {
+  ServicesGridBlock as ServicesGridBlockType,
+  Service,
+  CaseStudy,
+} from "@/payload-types"
 import configPromise from "@payload-config"
 import { getPayload } from "payload"
 import HeadingFeature from "@/components/HeadingFeature"
 import { ServicesCollection } from "@/components/ServicesCollection"
+import { FeaturedServiceCard } from "@/components/FeaturedServiceCard"
 
 const featuredIcons: Record<string, React.ReactNode> = {
   palette: (
@@ -162,6 +167,20 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
   const limitFromProps = limit ?? 6
   const featuredService = typeof featDoc?.value === "object" && featDoc?.value
 
+  let caseStudies: CaseStudy[] = []
+  if ((type === "feat" || type === "both") && featuredService) {
+    const payload = await getPayload({ config: configPromise })
+    const caseStudiesResult = await payload.find({
+      collection: "case-studies",
+      depth: 1,
+      limit: 6,
+      where: {
+        and: [{ _status: { equals: "published" } }, { services: { contains: featuredService.id } }],
+      },
+    })
+    caseStudies = caseStudiesResult.docs
+  }
+
   let services: Service[] = []
 
   if (populateBy === "selection" && selectedServices?.length) {
@@ -225,41 +244,8 @@ export const ServicesGridBlockComponent: React.FC<ServicesGridBlockType> = async
           </div>
         )}
         {(type === "feat" || type === "both") && featuredService && (
-          <div className="relative mb-16">
-            <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-primary/10 to-transparent dark:from-neutral-900 dark:via-neutral-800 rounded-3xl" />
-
-            <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 p-8 md:p-12 lg:p-16 items-center">
-              <div className="order-2 lg:order-1">
-                <span className="inline-block px-3 py-1 mb-6 text-xs font-bold tracking-widest text-white uppercase bg-primary rounded-full shadow-lg shadow-primary/30">
-                  Featured Service
-                </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
-                  {featuredService.title}
-                </h2>
-                {featuredService.excerpt && (
-                  <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 leading-relaxed max-w-lg">
-                    {featuredService.excerpt}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-4">
-                  <CMSLink
-                    url={featuredService.slug ? `/services/${featuredService.slug}` : "/services"}
-                    label="Learn More"
-                    appearance="default"
-                  />
-                  <CMSLink url="/services" label="All Services" appearance="outline" />
-                </div>
-              </div>
-
-              <div className="order-1 lg:order-2 flex items-center justify-center">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-linear-to-br from-primary via-primary to-secondary rounded-3xl blur-2xl opacity-40" />
-                  <div className="relative w-40 h-40 flex items-center justify-center bg-linear-to-br from-primary to-secondary rounded-3xl text-white shadow-2xl shadow-primary/40 group-hover:scale-105 transition-transform duration-500">
-                    {featuredIcons[featuredService.icon || ""] || defaultFeaturedIcon}
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="mb-16">
+            <FeaturedServiceCard service={featuredService} caseStudies={caseStudies} />
           </div>
         )}
 
