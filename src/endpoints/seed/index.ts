@@ -42,7 +42,6 @@ const collections: CollectionSlug[] = [
   "clients",
   "testimonials",
   "case-studies",
-  "contact-submissions",
 ]
 
 const categories = ["Technology", "News", "Finance", "Design", "Software", "Engineering"]
@@ -328,21 +327,6 @@ export const seed = async ({
   payload.logger.info(`— Seeding case studies...`)
 
   payload.logger.info(`— Seeding contact submissions...`)
-
-  await Promise.all([
-    payload.create({
-      collection: "contact-submissions",
-      data: contactSubmission1(serviceDocs[0].id),
-    }),
-    payload.create({
-      collection: "contact-submissions",
-      data: contactSubmission2(serviceDocs[2].id),
-    }),
-    payload.create({
-      collection: "contact-submissions",
-      data: contactSubmission3(),
-    }),
-  ])
 
   payload.logger.info(`— Seeding contact form...`)
 

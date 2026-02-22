@@ -1,16 +1,17 @@
 import React from "react"
 
-import { Media } from "@/components/Media"
 import type {
   CaseStudiesShowcaseBlock as CaseStudiesShowcaseBlockType,
   CaseStudy,
 } from "@/payload-types"
 
-import { CaseStudiesCollection, CaseStudyCardProps } from "./CaseStudiesCollection"
+import { CaseStudyCardProps } from "./CaseStudiesCollection"
 import { CMSLink } from "@/components/Link"
 import { getPayload } from "payload"
 import configPromise from "@payload-config"
 import { getCaseStudyCardData } from "@/utilities/getBlogCardData"
+import { CaseStudyCard } from "@/components/CaseStudyCard"
+import { FeaturedCaseStudyCard } from "@/components/FeaturedCaseStudyCard"
 
 export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType> = async (
   props,
@@ -37,7 +38,7 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
 
   const limitFromProps = limit ?? 4
   const featuredCaseStudy = typeof featDoc?.value === "object" && featDoc?.value
-  let docs: Partial<CaseStudy>[] = []
+  let docs: CaseStudy[] = []
   if (populateBy === "recents" || populateBy === "service") {
     const payload = await getPayload({ config: configPromise })
 
@@ -84,9 +85,9 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
       const filteredSelectedPosts = selectedCaseStudies.map((post: any) => {
         if (post?.value && typeof post.value === "object") return post.value
         if (typeof post === "object") return post
-      }) as Partial<CaseStudy>[]
+      }) as CaseStudy[]
 
-      docs = filteredSelectedPosts as Partial<CaseStudy>[]
+      docs = filteredSelectedPosts as CaseStudy[]
     }
   }
 
@@ -96,61 +97,11 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
   const otherCases =
     isFeatured && featuredCase ? docs.filter((c) => c.id !== featuredCase.id) : docs
   const caseStudies = docs.map((doc) => getCaseStudyCardData(doc)) as CaseStudyCardProps[]
-  const otherCaseStudies = otherCases.map((doc) =>
-    getCaseStudyCardData(doc),
-  ) as CaseStudyCardProps[]
+
   return (
     <section className="py-16 md:py-24" id={`block-${id}`}>
       <div className="container mx-auto px-4">
-        {type === "feat" && featuredCaseStudy && (
-          <div className="grid lg:grid-cols-2 gap-8 mb-16">
-            <div className="relative aspect-video lg:aspect-auto rounded-2xl overflow-hidden">
-              {featuredCaseStudy.featuredImage &&
-                typeof featuredCaseStudy.featuredImage === "object" && (
-                  <Media
-                    resource={featuredCaseStudy.featuredImage}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-            </div>
-            <div className="flex flex-col justify-center">
-              {showClient &&
-                featuredCaseStudy.client &&
-                typeof featuredCaseStudy.client === "object" && (
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-sm font-medium text-primary">
-                      {featuredCaseStudy.client.name}
-                    </span>
-                  </div>
-                )}
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{featuredCaseStudy.title}</h2>
-              {showExcerpt && featuredCaseStudy.excerpt && (
-                <p className="text-lg text-muted-foreground mb-6">{featuredCaseStudy.excerpt}</p>
-              )}
-              {showServices &&
-                featuredCaseStudy.services &&
-                featuredCaseStudy.services.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {featuredCaseStudy.services.slice(0, 3).map((service: any, i: number) => {
-                      const serviceId = typeof service === "object" ? service.id : service
-                      const serviceName = typeof service === "object" ? service.title : service
-                      return (
-                        <span
-                          key={serviceId || i}
-                          className="text-xs font-medium px-3 py-1 bg-muted text-muted-foreground rounded-full"
-                        >
-                          {serviceName}
-                        </span>
-                      )
-                    })}
-                  </div>
-                )}
-              <CMSLink url={`/case-studies`} label="View Case Study" appearance="default" />
-            </div>
-          </div>
-        )}
-
-        {type === "grid" && (title || headerLinks?.length) && (
+        {(type === "grid" || type === "both") && (title || headerLinks?.length) && (
           <div className="mb-12">
             <div className="flex flex-wrap items-center justify-between">
               <h3 className="text-2xl md:text-3xl font-bold">{title}</h3>
@@ -160,18 +111,24 @@ export const CaseStudiesShowcaseComponent: React.FC<CaseStudiesShowcaseBlockType
             </div>
           </div>
         )}
+        {type !== "grid" && featuredCaseStudy && (
+          <div className="mb-16">
+            <FeaturedCaseStudyCard {...featuredCaseStudy} />
+          </div>
+        )}
 
-        {type === "grid" && (
-          <CaseStudiesCollection
-            layout={layout}
-            header={header}
-            caseStudies={caseStudies}
-            showClient={showClient}
-            showServices={showServices}
-            showExcerpt={showExcerpt}
-            otherCases={otherCaseStudies}
-            cta={cta}
-          />
+        {(type === "grid" || type === "both") && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {otherCases?.map((study) => (
+              <CaseStudyCard key={study.id} {...study} />
+            ))}
+          </div>
+        )}
+
+        {cta?.enabled && cta.link && (
+          <div className="text-center mt-12">
+            <CMSLink {...cta.link} size="lg" />
+          </div>
         )}
       </div>
     </section>

@@ -24,8 +24,9 @@ export const CaseStudiesShowcase: Block = {
       defaultValue: "grid",
       required: true,
       options: [
-        { label: "Featured + Grid", value: "feat" },
+        { label: "Featured", value: "feat" },
         { label: "Grid Only", value: "grid" },
+        { label: "Featured + Grid", value: "both" },
       ],
       admin: {
         description:

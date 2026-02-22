@@ -75,7 +75,6 @@ export interface Config {
     services: Service;
     testimonials: Testimonial;
     'case-studies': CaseStudy;
-    'contact-submissions': ContactSubmission;
     pages: Page;
     posts: Post;
     redirects: Redirect;
@@ -103,7 +102,6 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
-    'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -575,6 +573,21 @@ export interface CaseStudy {
    */
   services?: (number | Service)[] | null;
   /**
+   * Badge color for card
+   */
+  color?:
+    | (
+        | 'bg-primary'
+        | 'bg-blue-600'
+        | 'bg-green-600'
+        | 'bg-purple-600'
+        | 'bg-pink-600'
+        | 'bg-teal-600'
+        | 'bg-indigo-600'
+        | 'bg-rose-600'
+      )
+    | null;
+  /**
    * What problem did the client face?
    */
   challenge?: {
@@ -686,37 +699,6 @@ export interface CaseStudy {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * Contact form submissions from the website
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-submissions".
- */
-export interface ContactSubmission {
-  id: number;
-  name: string;
-  email: string;
-  phone?: string | null;
-  company?: string | null;
-  subject?: ('general' | 'project' | 'partnership' | 'careers' | 'other') | null;
-  /**
-   * Service they are interested in
-   */
-  service?: (number | null) | Service;
-  message: string;
-  budget?: ('under-5k' | '5k-10k' | '10k-25k' | '25k-50k' | '50k-plus') | null;
-  status?: ('new' | 'in-progress' | 'responded' | 'closed') | null;
-  /**
-   * Internal notes about this submission
-   */
-  notes?: string | null;
-  /**
-   * Team member handling this inquiry
-   */
-  assignedTo?: (number | null) | User;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1361,7 +1343,7 @@ export interface CaseStudiesShowcaseBlock {
   /**
    * Selecting "Featured + Grid" means other case studies will appear in right side of the featured one.
    */
-  type: 'feat' | 'grid';
+  type: 'feat' | 'grid' | 'both';
   title?: string | null;
   link?:
     | {
@@ -2095,10 +2077,6 @@ export interface PayloadLockedDocument {
         value: number | CaseStudy;
       } | null)
     | ({
-        relationTo: 'contact-submissions';
-        value: number | ContactSubmission;
-      } | null)
-    | ({
         relationTo: 'pages';
         value: number | Page;
       } | null)
@@ -2416,6 +2394,7 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   client?: T;
   projectDate?: T;
   services?: T;
+  color?: T;
   challenge?:
     | T
     | {
@@ -2464,25 +2443,6 @@ export interface CaseStudiesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-submissions_select".
- */
-export interface ContactSubmissionsSelect<T extends boolean = true> {
-  name?: T;
-  email?: T;
-  phone?: T;
-  company?: T;
-  subject?: T;
-  service?: T;
-  message?: T;
-  budget?: T;
-  status?: T;
-  notes?: T;
-  assignedTo?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

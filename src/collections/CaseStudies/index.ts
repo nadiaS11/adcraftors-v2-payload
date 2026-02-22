@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from "payload"
 
 import {
   BlocksFeature,
@@ -6,13 +6,13 @@ import {
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+} from "@payloadcms/richtext-lexical"
 
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { populatePublishedAt } from '../../hooks/populatePublishedAt'
-import { slugField } from 'payload'
+import { authenticated } from "../../access/authenticated"
+import { authenticatedOrPublished } from "../../access/authenticatedOrPublished"
+import { generatePreviewPath } from "../../utilities/generatePreviewPath"
+import { populatePublishedAt } from "../../hooks/populatePublishedAt"
+import { slugField } from "payload"
 
 import {
   MetaDescriptionField,
@@ -20,7 +20,9 @@ import {
   MetaTitleField,
   OverviewField,
   PreviewField,
-} from '@payloadcms/plugin-seo/fields'
+} from "@payloadcms/plugin-seo/fields"
+import test from "node:test"
+import { C } from "vitest/dist/chunks/reporters.d.DL9pg5DB.js"
 
 /**
  * Case Studies Collection
@@ -34,10 +36,10 @@ import {
  * - References: TeamMembers (team who worked on it)
  */
 export const CaseStudies: CollectionConfig = {
-  slug: 'case-studies',
+  slug: "case-studies",
   labels: {
-    singular: 'Case Study',
-    plural: 'Case Studies',
+    singular: "Case Study",
+    plural: "Case Studies",
   },
   access: {
     create: authenticated,
@@ -52,107 +54,140 @@ export const CaseStudies: CollectionConfig = {
     featuredImage: true,
     client: true,
     services: true,
+    results: {
+      metrics: true,
+    },
+    testimonial: true,
+    challenge: {
+      content: true,
+    },
+    solution: {
+      content: true,
+    },
   },
   admin: {
-    defaultColumns: ['title', 'client', 'featured', 'updatedAt'],
-    useAsTitle: 'title',
-    group: 'Content',
-    description: 'Portfolio case studies showcasing client projects and results',
+    defaultColumns: ["title", "client", "featured", "updatedAt"],
+    useAsTitle: "title",
+    group: "Content",
+    description: "Portfolio case studies showcasing client projects and results",
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
+      name: "title",
+      type: "text",
       required: true,
       admin: {
         description: 'Project name or headline (e.g., "Brand Refresh for TechCorp")',
       },
     },
     {
-      type: 'tabs',
+      type: "tabs",
       tabs: [
         {
-          label: 'Overview',
-          description: 'Basic project information for cards and listings',
+          label: "Overview",
+          description: "Basic project information for cards and listings",
           fields: [
             {
-              name: 'excerpt',
-              type: 'textarea',
+              name: "excerpt",
+              type: "textarea",
               required: true,
               maxLength: 200,
               admin: {
-                description: 'Short summary for portfolio cards (max 200 characters)',
+                description: "Short summary for portfolio cards (max 200 characters)",
               },
             },
             {
-              name: 'featuredImage',
-              type: 'upload',
-              relationTo: 'media',
+              name: "featuredImage",
+              type: "upload",
+              relationTo: "media",
               required: true,
               admin: {
-                description: 'Main hero image for the case study',
+                description: "Main hero image for the case study",
               },
             },
             {
-              type: 'row',
+              type: "row",
               fields: [
                 {
-                  name: 'client',
-                  type: 'relationship',
-                  relationTo: 'clients',
+                  name: "client",
+                  type: "relationship",
+                  relationTo: "clients",
                   admin: {
-                    width: '50%',
-                    description: 'Select the client for this project',
+                    width: "50%",
+                    description: "Select the client for this project",
                   },
                 },
                 {
-                  name: 'projectDate',
-                  type: 'date',
+                  name: "projectDate",
+                  type: "date",
                   admin: {
-                    width: '50%',
-                    description: 'When the project was completed',
+                    width: "50%",
+                    description: "When the project was completed",
                     date: {
-                      pickerAppearance: 'monthOnly',
+                      pickerAppearance: "monthOnly",
                     },
                   },
                 },
               ],
             },
             {
-              name: 'services',
-              type: 'relationship',
-              relationTo: 'services',
+              name: "services",
+              type: "relationship",
+              relationTo: "services",
               hasMany: true,
               admin: {
-                description: 'Services provided for this project',
+                description: "Services provided for this project",
               },
+            },
+            {
+              type: "row",
+              fields: [
+                {
+                  name: "color",
+                  type: "select",
+                  options: [
+                    { label: "Orange", value: "bg-primary" },
+                    { label: "Blue", value: "bg-blue-600" },
+                    { label: "Green", value: "bg-green-600" },
+                    { label: "Purple", value: "bg-purple-600" },
+                    { label: "Pink", value: "bg-pink-600" },
+                    { label: "Teal", value: "bg-teal-600" },
+                    { label: "Indigo", value: "bg-indigo-600" },
+                    { label: "Rose", value: "bg-rose-600" },
+                  ],
+                  admin: {
+                    width: "50%",
+                    description: "Badge color for card",
+                  },
+                },
+              ],
             },
           ],
         },
         {
-          label: 'Content',
-          description: 'Full case study content',
+          label: "Content",
+          description: "Full case study content",
           fields: [
             {
-              name: 'challenge',
-              type: 'group',
-              label: 'The Challenge',
+              name: "challenge",
+              type: "group",
+              label: "The Challenge",
               admin: {
-                description: 'What problem did the client face?',
+                description: "What problem did the client face?",
               },
               fields: [
                 {
-                  name: 'heading',
-                  type: 'text',
-                  defaultValue: 'The Challenge',
+                  name: "heading",
+                  type: "text",
+                  defaultValue: "The Challenge",
                 },
                 {
-                  name: 'content',
-                  type: 'richText',
+                  name: "content",
+                  type: "richText",
                   editor: lexicalEditor({
                     features: ({ rootFeatures }) => [
                       ...rootFeatures,
-                      HeadingFeature({ enabledHeadingSizes: ['h3', 'h4'] }),
+                      HeadingFeature({ enabledHeadingSizes: ["h3", "h4"] }),
                       FixedToolbarFeature(),
                       InlineToolbarFeature(),
                     ],
@@ -161,25 +196,25 @@ export const CaseStudies: CollectionConfig = {
               ],
             },
             {
-              name: 'solution',
-              type: 'group',
-              label: 'Our Solution',
+              name: "solution",
+              type: "group",
+              label: "Our Solution",
               admin: {
-                description: 'How did we solve the problem?',
+                description: "How did we solve the problem?",
               },
               fields: [
                 {
-                  name: 'heading',
-                  type: 'text',
-                  defaultValue: 'Our Solution',
+                  name: "heading",
+                  type: "text",
+                  defaultValue: "Our Solution",
                 },
                 {
-                  name: 'content',
-                  type: 'richText',
+                  name: "content",
+                  type: "richText",
                   editor: lexicalEditor({
                     features: ({ rootFeatures }) => [
                       ...rootFeatures,
-                      HeadingFeature({ enabledHeadingSizes: ['h3', 'h4'] }),
+                      HeadingFeature({ enabledHeadingSizes: ["h3", "h4"] }),
                       FixedToolbarFeature(),
                       InlineToolbarFeature(),
                     ],
@@ -188,57 +223,57 @@ export const CaseStudies: CollectionConfig = {
               ],
             },
             {
-              name: 'results',
-              type: 'group',
-              label: 'The Results',
+              name: "results",
+              type: "group",
+              label: "The Results",
               admin: {
-                description: 'What were the measurable outcomes?',
+                description: "What were the measurable outcomes?",
               },
               fields: [
                 {
-                  name: 'heading',
-                  type: 'text',
-                  defaultValue: 'The Results',
+                  name: "heading",
+                  type: "text",
+                  defaultValue: "The Results",
                 },
                 {
-                  name: 'content',
-                  type: 'richText',
+                  name: "content",
+                  type: "richText",
                   editor: lexicalEditor({
                     features: ({ rootFeatures }) => [
                       ...rootFeatures,
-                      HeadingFeature({ enabledHeadingSizes: ['h3', 'h4'] }),
+                      HeadingFeature({ enabledHeadingSizes: ["h3", "h4"] }),
                       FixedToolbarFeature(),
                       InlineToolbarFeature(),
                     ],
                   }),
                 },
                 {
-                  name: 'metrics',
-                  type: 'array',
-                  label: 'Key Metrics',
+                  name: "metrics",
+                  type: "array",
+                  label: "Key Metrics",
                   admin: {
                     description: 'Quantifiable results (e.g., "150% increase in traffic")',
                   },
                   fields: [
                     {
-                      type: 'row',
+                      type: "row",
                       fields: [
                         {
-                          name: 'value',
-                          type: 'text',
+                          name: "value",
+                          type: "text",
                           required: true,
                           admin: {
-                            width: '30%',
-                            placeholder: '150%',
+                            width: "30%",
+                            placeholder: "150%",
                           },
                         },
                         {
-                          name: 'label',
-                          type: 'text',
+                          name: "label",
+                          type: "text",
                           required: true,
                           admin: {
-                            width: '70%',
-                            placeholder: 'Increase in organic traffic',
+                            width: "70%",
+                            placeholder: "Increase in organic traffic",
                           },
                         },
                       ],
@@ -250,51 +285,51 @@ export const CaseStudies: CollectionConfig = {
           ],
         },
         {
-          label: 'Gallery',
-          description: 'Project images and media',
+          label: "Gallery",
+          description: "Project images and media",
           fields: [
             {
-              name: 'gallery',
-              type: 'array',
-              label: 'Project Gallery',
+              name: "gallery",
+              type: "array",
+              label: "Project Gallery",
               admin: {
-                description: 'Additional images showcasing the project',
+                description: "Additional images showcasing the project",
               },
               fields: [
                 {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
+                  name: "image",
+                  type: "upload",
+                  relationTo: "media",
                   required: true,
                 },
                 {
-                  name: 'caption',
-                  type: 'text',
+                  name: "caption",
+                  type: "text",
                 },
               ],
             },
           ],
         },
         {
-          name: 'meta',
-          label: 'SEO',
+          name: "meta",
+          label: "SEO",
           fields: [
             OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
+              titlePath: "meta.title",
+              descriptionPath: "meta.description",
+              imagePath: "meta.image",
             }),
             MetaTitleField({
               hasGenerateFn: true,
             }),
             MetaImageField({
-              relationTo: 'media',
+              relationTo: "media",
             }),
             MetaDescriptionField({}),
             PreviewField({
               hasGenerateFn: true,
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
+              titlePath: "meta.title",
+              descriptionPath: "meta.description",
             }),
           ],
         },
@@ -302,40 +337,40 @@ export const CaseStudies: CollectionConfig = {
     },
     // Sidebar fields
     {
-      name: 'featured',
-      type: 'checkbox',
+      name: "featured",
+      type: "checkbox",
       defaultValue: false,
       admin: {
-        position: 'sidebar',
-        description: 'Feature this case study on the homepage',
+        position: "sidebar",
+        description: "Feature this case study on the homepage",
       },
     },
     {
-      name: 'teamMembers',
-      type: 'relationship',
-      relationTo: 'team-members',
+      name: "teamMembers",
+      type: "relationship",
+      relationTo: "team-members",
       hasMany: true,
       admin: {
-        position: 'sidebar',
-        description: 'Team members who worked on this project',
+        position: "sidebar",
+        description: "Team members who worked on this project",
       },
     },
     {
-      name: 'testimonial',
-      type: 'relationship',
-      relationTo: 'testimonials',
+      name: "testimonial",
+      type: "relationship",
+      relationTo: "testimonials",
       admin: {
-        position: 'sidebar',
-        description: 'Client testimonial for this project',
+        position: "sidebar",
+        description: "Client testimonial for this project",
       },
     },
     {
-      name: 'publishedAt',
-      type: 'date',
+      name: "publishedAt",
+      type: "date",
       admin: {
-        position: 'sidebar',
+        position: "sidebar",
         date: {
-          pickerAppearance: 'dayAndTime',
+          pickerAppearance: "dayAndTime",
         },
       },
     },

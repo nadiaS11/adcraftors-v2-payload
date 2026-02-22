@@ -83,8 +83,7 @@ export default buildConfig({
     Services, // No deps
     Testimonials, // Depends on: Clients
     CaseStudies, // Depends on: Clients, Services, TeamMembers, Testimonials
-    ContactSubmissions, // Depends on: Services, Users
-    // Core collections with blocks (depend on all above)
+     // Core collections with blocks (depend on all above)
     Pages,
     Posts,
   ],
