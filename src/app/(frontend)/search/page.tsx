@@ -1,12 +1,12 @@
-import type { Metadata } from 'next/types'
+import type { Metadata } from "next/types"
 
-import { CollectionArchive } from '@/components/CollectionArchive'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import React from 'react'
-import { Search } from '@/search/Component'
-import PageClient from './page.client'
-import { CardPostData } from '@/components/Card'
+import { CollectionArchive } from "@/components/CollectionArchive"
+import configPromise from "@payload-config"
+import { getPayload } from "payload"
+import React from "react"
+import { Search } from "@/search/Component"
+import PageClient from "./page.client"
+import { CardPostData } from "@/components/Card"
 
 type Args = {
   searchParams: Promise<{
@@ -18,7 +18,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
-    collection: 'search',
+    collection: "search",
     depth: 1,
     limit: 12,
     select: {
@@ -39,12 +39,12 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
                 },
               },
               {
-                'meta.description': {
+                "meta.description": {
                   like: query,
                 },
               },
               {
-                'meta.title': {
+                "meta.title": {
                   like: query,
                 },
               },
@@ -83,6 +83,6 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Search`,
+    title: `We Are AdCraftors Search`,
   }
 }
