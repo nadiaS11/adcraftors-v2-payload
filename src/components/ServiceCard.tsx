@@ -3,205 +3,238 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { cn } from "@/utilities/ui"
-import { fadeInUp, cardHover } from "@/lib/animations/variants"
 import type { Service } from "@/payload-types"
-import { Media } from "@/components/Media"
+import { fadeInUp } from "@/lib/animations/variants"
+import { Media } from "./Media"
 
 interface ServiceCardProps {
   service: Service
+  index?: number
   style?: "cards" | "list" | "image-cards"
   showExcerpt?: boolean
   showLearnMore?: boolean
 }
 
-const iconMap: Record<string, React.ReactNode> = {
+const icons: Record<string, React.ReactNode> = {
   palette: (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+        d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
       />
     </svg>
   ),
   code: (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+        d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"
       />
     </svg>
   ),
   search: (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
       />
     </svg>
   ),
   target: (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
       />
     </svg>
   ),
   "pen-tool": (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"
       />
     </svg>
   ),
   share: (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+        d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
       />
     </svg>
   ),
   "bar-chart": (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
       />
     </svg>
   ),
   zap: (
     <svg
-      className="w-8 h-8"
+      className="w-6 h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      aria-hidden="true"
+      strokeWidth={1.5}
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M13 10V3L4 14h7v7l9-11h-7z"
+        d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
       />
     </svg>
   ),
 }
 
+const defaultIcon = (
+  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
+    />
+  </svg>
+)
+
 export const ServiceCard: React.FC<ServiceCardProps> = ({
   service,
+  index = 0,
   style = "cards",
   showExcerpt = true,
   showLearnMore = true,
 }) => {
+  const displayNumber = String(index + 1).padStart(2, "0")
+  const iconKey = service.icon || "zap"
+  const icon = icons[iconKey] || defaultIcon
+
   return (
-    <motion.div
-      variants={fadeInUp}
-      whileHover={cardHover}
+    <motion.a
+      href={`/services/${service.slug || ""}`}
+      initial={{ scale: 1 }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
       className={cn(
-        "group relative",
-        style === "cards" &&
-          "bg-white dark:bg-neutral-800 rounded-2xl p-6 md:p-8 shadow-md hover:shadow-xl transition-shadow duration-300 border border-neutral-100 dark:border-neutral-700",
-        style === "list" && "border-b border-neutral-200 dark:border-neutral-700 pb-6",
-        style === "image-cards" && "rounded-2xl overflow-hidden",
+        "group block h-full no-underline",
+        style === "list" && "border-r last:border-r-0 border-border   dark:border-neutral-800 pb-6",
       )}
     >
+      {style === "cards" && (
+        <div className="relative h-full min-h-50 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary text-white mb-4 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-primary/25">
+            {icon}
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+              {service.title || "Service Title"}
+            </h3>
+            {showExcerpt && (
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-2">
+                {service.excerpt || "Service description goes here."}
+              </p>
+            )}
+          </div>
+
+          {showLearnMore && (
+            <div className="absolute bottom-4 left-6 flex items-center text-sm font-medium text-primary group-hover:underline transition-colors">
+              <span className="mr-2">Learn More</span>
+              <svg
+                className="w-4 h-4  group-hover:translate-x-2 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </div>
+          )}
+        </div>
+      )}
+
+      {style === "list" && (
+        <div className="flex items-start gap-4 servie-list-item">
+          <div className="shrink-0 w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center shadow-md shadow-primary/20">
+            {icon}
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-1">
+              {service.title || "Service Title"}
+            </h3>
+            {showExcerpt && service.excerpt && (
+              <p className="text-sm text-neutral-500 dark:text-neutral-400">{service.excerpt}</p>
+            )}
+          </div>
+        </div>
+      )}
+
       {style === "image-cards" && service.featuredImage && (
-        <div className="aspect-video bg-neutral-200 dark:bg-neutral-700 mb-4 rounded-lg overflow-hidden">
-          <Media resource={service.featuredImage} className="w-full h-full object-cover" />
+        <div className="relative ">
+          <Media
+            resource={service.featuredImage}
+            imgClassName="w-full h-full object-cover rounded-2xl group-hover:brightness-50 transition-all duration-300"
+          />
+          <h3 className="absolute bottom-4 left-4 text-lg font-semibold text-white group-hover:text-primary dark:text-white">
+            {service.title || "Service Title"}
+          </h3>
         </div>
       )}
-
-      {style === "cards" && service.icon && (
-        <div className="w-14 h-14 rounded-xl bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-          {iconMap[service.icon] || iconMap["zap"]}
-        </div>
-      )}
-
-      <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-3">
-        {service.title}
-      </h3>
-
-      {showExcerpt && service.excerpt && (
-        <p className="text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-3">
-          {service.excerpt}
-        </p>
-      )}
-
-      {showLearnMore && (
-        <a
-          href={`/services`}
-          className="inline-flex items-center text-primary  dark:text-primary-400 font-medium hover:gap-2 transition-all duration-200 group/link"
-        >
-          Learn more
-          <svg
-            className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-      )}
-    </motion.div>
+    </motion.a>
   )
 }

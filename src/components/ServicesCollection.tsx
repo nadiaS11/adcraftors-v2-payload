@@ -21,8 +21,8 @@ export const ServicesCollection: React.FC<CollectionServicesClientProps> = ({
   services,
   columns = "3",
   style = "cards",
-  showExcerpt = true,
-  showLearnMore = true,
+  showExcerpt = false,
+  showLearnMore = false,
   cta,
 }) => {
   const gridCols = {
@@ -40,10 +40,11 @@ export const ServicesCollection: React.FC<CollectionServicesClientProps> = ({
         viewport={defaultViewport}
         variants={staggerContainer}
       >
-        {services.map((service) => (
+        {services.map((service, index) => (
           <ServiceCard
             key={service.id}
             service={service}
+            index={index}
             style={style}
             showExcerpt={showExcerpt}
             showLearnMore={showLearnMore}
