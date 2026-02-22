@@ -19,13 +19,13 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
-    setHeaderTheme("dark")
+    setHeaderTheme("light")
   })
 
   return (
     <div
-      className="relative -mt-[10.4rem] min-h-screen flex items-center justify-center text-white overflow-hidden"
-      data-theme="dark"
+      className="relative -mt-[10.4rem] min-h-screen flex items-center justify-center overflow-hidden"
+      data-theme="light"
     >
       {/* ── Background image ── */}
       {media && typeof media === "object" && (
@@ -34,45 +34,52 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
         </div>
       )}
 
-      {/* ── Glass layers stacked on top of the image ── */}
+      {/* ── Light glassmorphism overlay stack ── */}
 
-      {/* 1. Dark base tint */}
-      <div className="absolute inset-0 -z-10 bg-black/50" />
+      {/* 1. Pure white frost — dominant, almost fully opaque */}
+      <div className="absolute inset-0 -z-10" style={{ background: "rgba(255, 255, 255, 0.88)" }} />
 
-      {/* 2. Colour wash that picks up your primary hue */}
-      <div className="absolute inset-0 -z-10 bg-primary/20 mix-blend-multiply" />
+      {/* 2. Frosted blur */}
+      <div className="absolute inset-0 -z-10 backdrop-blur-[8px]" />
 
-      {/* 3. Frosted-glass blur panel — covers the whole hero */}
-      <div className="absolute inset-0 -z-10 backdrop-blur-[2px]" />
-
-      {/* 4. Vignette — darkens edges, keeps centre bright */}
+      {/* 3. Centre glow — pure white core, barely-there warm tint only at far edges */}
       <div
         className="absolute inset-0 -z-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)",
+            "radial-gradient(ellipse 85% 70% at 50% 40%, rgba(255,255,255,0.60) 0%, rgba(255,248,240,0.30) 60%, rgba(253,230,210,0.18) 100%)",
         }}
       />
 
-      {/* 5. Subtle noise grain overlay for texture */}
+      {/* 4. Noise grain */}
       <div
-        className="absolute inset-0 -z-10 pointer-events-none opacity-[0.06]"
+        className="absolute inset-0 -z-10 pointer-events-none opacity-[0.025]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           backgroundRepeat: "repeat",
           backgroundSize: "128px 128px",
         }}
       />
 
-      {/* 6. Top & bottom fade so it blends into page sections */}
-      <div className="absolute inset-x-0 top-0 h-40 -z-10 bg-linear-to-b from-black/60 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 -z-10 bg-linear-to-t from-black/70 to-transparent" />
+      {/* 5. Top edge — pure white nav blend */}
+      <div
+        className="absolute inset-x-0 top-0 h-56 -z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.98), transparent)" }}
+      />
 
-      {/* ── Content ── */}
-      <div className="container-standard relative z-10 py-32">
+      {/* 6. Bottom edge — neutral white fade, no orange */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-48 -z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to top, rgba(255,255,255,0.85), transparent)" }}
+      />
+
+      {/* ── Content — dark text on light glass ── */}
+      <div className="container-standard relative z-10  pt-40 pb-32">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <Zap className="h-4 w-4" /> {headline}
+          {/* Headline pill — solid primary, matches screenshot exactly */}
+          <div className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold mb-6 animate-fade-in-up">
+            <Zap className="h-4 w-4" />
+            {headline}
           </div>
 
           {richText && (
@@ -93,78 +100,94 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
           </div>
         </div>
 
-        {/* ── Feature cards — now glass panels ── */}
+        {/* ── Feature cards — frosted light panels ── */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           {feats && feats.length > 0 ? (
             feats.map((item) => (
-              <div
+              <LightGlassCard
                 key={item.id}
-                className="group animate-fade-in-up animation-delay-600 rounded-2xl p-6 text-center
-                           backdrop-blur-md bg-white/10 border border-white/15
-                           hover:bg-white/20 hover:border-white/30
-                           transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
-              >
-                <div
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-5
-                             bg-white/10 border border-white/15
-                             group-hover:bg-primary group-hover:border-primary
-                             transition-all duration-300"
-                >
-                  {item.icon && typeof item.icon === "object" && (
-                    <Media
-                      resource={{ ...item.icon, height: 32, width: 32 }}
-                      className="h-8 w-8 text-white"
-                    />
-                  )}
-                </div>
-                <h3 className="font-serif font-semibold text-xl text-white">{item?.title}</h3>
-              </div>
+                title={item?.title ?? ""}
+                delay="animation-delay-600"
+                icon={
+                  item.icon && typeof item.icon === "object" ? (
+                    <Media resource={{ ...item.icon, height: 32, width: 32 }} className="h-8 w-8" />
+                  ) : (
+                    <Zap className="h-8 w-8 text-primary" />
+                  )
+                }
+              />
             ))
           ) : (
             <>
-              {[
-                {
-                  icon: <Palette className="h-8 w-8 text-white" />,
-                  title: "Creative Design",
-                  desc: "Stunning visuals that capture attention and convert visitors into customers",
-                  delay: "animation-delay-600",
-                },
-                {
-                  icon: <Rocket className="h-8 w-8 text-white" />,
-                  title: "Digital Strategy",
-                  desc: "Data-driven strategies that accelerate growth and maximise ROI",
-                  delay: "animation-delay-700",
-                },
-                {
-                  icon: <Zap className="h-8 w-8 text-white" />,
-                  title: "Performance Marketing",
-                  desc: "Results-focused campaigns that deliver measurable business impact",
-                  delay: "animation-delay-800",
-                },
-              ].map(({ icon, title, desc, delay }) => (
-                <div
-                  key={title}
-                  className={`group ${delay} animate-fade-in-up rounded-2xl p-6 text-center
-                             backdrop-blur-md bg-white/10 border border-white/15
-                             hover:bg-white/20 hover:border-white/30
-                             transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.25)]`}
-                >
-                  <div
-                    className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-5
-                               bg-white/10 border border-white/15
-                               group-hover:bg-primary group-hover:border-primary
-                               transition-all duration-300"
-                  >
-                    {icon}
-                  </div>
-                  <h3 className="font-serif font-semibold text-xl text-white mb-2">{title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{desc}</p>
-                </div>
-              ))}
+              <LightGlassCard
+                icon={<Palette className="h-8 w-8 text-primary" />}
+                title="Creative Design"
+                desc="Stunning visuals that capture attention and convert visitors into customers"
+                delay="animation-delay-600"
+              />
+              <LightGlassCard
+                icon={<Rocket className="h-8 w-8 text-primary" />}
+                title="Digital Strategy"
+                desc="Data-driven strategies that accelerate growth and maximise ROI"
+                delay="animation-delay-700"
+              />
+              <LightGlassCard
+                icon={<Zap className="h-8 w-8 text-primary" />}
+                title="Performance Marketing"
+                desc="Results-focused campaigns that deliver measurable business impact"
+                delay="animation-delay-800"
+              />
             </>
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+// ── Light frosted glass card ──────────────────────────────────────────────────
+function LightGlassCard({
+  icon,
+  title,
+  desc,
+  delay,
+}: {
+  icon: React.ReactNode
+  title: string
+  desc?: string
+  delay?: string
+}) {
+  return (
+    <div
+      className={`group ${delay ?? ""} animate-fade-in-up rounded-2xl p-6 text-center backdrop-blur-md transition-all duration-300 hover:-translate-y-1`}
+      style={{
+        background: "rgba(255, 255, 255, 0.60)",
+        border: "1px solid rgba(215, 210, 205, 0.65)",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.95)",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement
+        el.style.background = "rgba(255, 255, 255, 0.80)"
+        el.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09), inset 0 1px 0 rgba(255,255,255,0.95)"
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement
+        el.style.background = "rgba(255, 255, 255, 0.60)"
+        el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.95)"
+      }}
+    >
+      {/* Icon container — light orange tint, matches screenshot */}
+      <div
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 transition-all duration-300 group-hover:scale-110"
+        style={{
+          background: "rgba(234, 88, 12, 0.07)",
+          border: "1px solid rgba(234, 88, 12, 0.09)",
+        }}
+      >
+        {icon}
+      </div>
+      <h3 className="font-serif font-semibold text-xl text-gray-900 mb-2">{title}</h3>
+      {desc && <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>}
     </div>
   )
 }
