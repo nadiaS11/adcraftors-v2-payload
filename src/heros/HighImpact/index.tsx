@@ -36,18 +36,18 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
 
       {/* ── Light glassmorphism overlay stack ── */}
 
-      {/* 1. Pure white frost — dominant, almost fully opaque */}
-      <div className="absolute inset-0 -z-10" style={{ background: "rgba(255, 255, 255, 0.88)" }} />
+      {/* 1. White frost — dialled back so photo peeks through */}
+      <div className="absolute inset-0 -z-10" style={{ background: "rgba(255, 255, 255, 0.58)" }} />
 
-      {/* 2. Frosted blur */}
-      <div className="absolute inset-0 -z-10 backdrop-blur-[8px]" />
+      {/* 2. Light blur — just enough to feel frosted, not fully opaque */}
+      <div className="absolute inset-0 -z-10 backdrop-blur-[3px]" />
 
-      {/* 3. Centre glow — pure white core, barely-there warm tint only at far edges */}
+      {/* 3. Centre glow — softer, lets image breathe at edges */}
       <div
         className="absolute inset-0 -z-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 85% 70% at 50% 40%, rgba(255,255,255,0.60) 0%, rgba(255,248,240,0.30) 60%, rgba(253,230,210,0.18) 100%)",
+            "radial-gradient(ellipse 85% 70% at 50% 40%, rgba(255,255,255,0.30) 0%, rgba(255,248,240,0.14) 60%, rgba(253,230,210,0.06) 100%)",
         }}
       />
 
@@ -74,7 +74,7 @@ export const HighImpactHero: React.FC<Page["hero"]> = ({
       />
 
       {/* ── Content — dark text on light glass ── */}
-      <div className="container-standard relative z-10  pt-40 pb-32">
+      <div className="container-standard relative z-10 py-32">
         <div className="text-center">
           {/* Headline pill — solid primary, matches screenshot exactly */}
           <div className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold mb-6 animate-fade-in-up">
@@ -161,19 +161,19 @@ function LightGlassCard({
     <div
       className={`group ${delay ?? ""} animate-fade-in-up rounded-2xl p-6 text-center backdrop-blur-md transition-all duration-300 hover:-translate-y-1`}
       style={{
-        background: "rgba(255, 255, 255, 0.60)",
-        border: "1px solid rgba(215, 210, 205, 0.65)",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.95)",
+        background: "rgba(255, 255, 255, 0.28)",
+        border: "1px solid rgba(255, 255, 255, 0.55)",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.70)",
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLElement
-        el.style.background = "rgba(255, 255, 255, 0.80)"
-        el.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09), inset 0 1px 0 rgba(255,255,255,0.95)"
+        el.style.background = "rgba(255, 255, 255, 0.42)"
+        el.style.boxShadow = "0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.80)"
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLElement
-        el.style.background = "rgba(255, 255, 255, 0.60)"
-        el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.95)"
+        el.style.background = "rgba(255, 255, 255, 0.28)"
+        el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.70)"
       }}
     >
       {/* Icon container — light orange tint, matches screenshot */}
