@@ -14,7 +14,6 @@ import { CMSLink } from "@/components/Link"
 import { Media } from "@/components/Media"
 
 export type Props = {
-  header?: CaseStudiesShowcaseBlock["header"]
   cta?: CaseStudiesShowcaseBlock["cta"]
   layout?: "grid" | "masonry" | "featured-grid" | "slider" | null | undefined
   caseStudies: CaseStudyCardProps[]
@@ -25,49 +24,10 @@ export type Props = {
 }
 
 export const CaseStudiesCollection: React.FC<Props> = (props) => {
-  const { layout, header, caseStudies, showClient, showServices, showExcerpt, otherCases, cta } =
-    props
+  const { layout, caseStudies, showClient, showServices, showExcerpt, otherCases, cta } = props
 
   return (
     <>
-      {(header?.eyebrow || header?.headline) && (
-        <>
-          {header?.eyebrow && (
-            <motion.span
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              variants={fadeInUp}
-              className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-3"
-            >
-              {header.eyebrow}
-            </motion.span>
-          )}
-
-          {header?.headline && (
-            <motion.h2
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              variants={fadeInUp}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4"
-            >
-              {header.headline}
-            </motion.h2>
-          )}
-
-          {header?.description && (
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              variants={fadeInUp}
-              className="text-lg text-muted-foreground mb-12 max-w-2xl"
-            />
-          )}
-        </>
-      )}
-
       {layout === "grid" && (
         <motion.div
           className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8"
