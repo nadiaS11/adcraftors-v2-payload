@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<sitemap><loc>http://localhost:3000/pages-sitemap.xml</loc></sitemap>
-<sitemap><loc>http://localhost:3000/posts-sitemap.xml</loc></sitemap>
+<sitemap><loc>https://nadiasultana.cloud/pages-sitemap.xml</loc></sitemap>
+<sitemap><loc>https://nadiasultana.cloud/posts-sitemap.xml</loc></sitemap>
+<sitemap><loc>https://nadiasultana.cloud/services-sitemap.xml</loc></sitemap>
+<sitemap><loc>https://nadiasultana.cloud/case-studies-sitemap.xml</loc></sitemap>
 </sitemapindex>

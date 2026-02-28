@@ -13,6 +13,7 @@ import { authenticatedOrPublished } from "../../access/authenticatedOrPublished"
 import { generatePreviewPath } from "../../utilities/generatePreviewPath"
 import { populatePublishedAt } from "../../hooks/populatePublishedAt"
 import { slugField } from "payload"
+import { revalidateCaseStudy, revalidateCaseStudyDelete } from "./hooks/revalidateCaseStudy"
 
 import {
   MetaDescriptionField,
@@ -378,6 +379,8 @@ export const CaseStudies: CollectionConfig = {
   ],
   hooks: {
     beforeChange: [populatePublishedAt],
+    afterChange: [revalidateCaseStudy],
+    afterDelete: [revalidateCaseStudyDelete],
   },
   versions: {
     drafts: {

@@ -115,7 +115,7 @@ export const ArchiveBlock: React.FC<
                 </p>
               )}
               <CMSLink
-                url={`/posts/${feaaturedDoc.slug}`}
+                url={`/blog/${feaaturedDoc.slug}`}
                 label="Read Article"
                 appearance="default"
               />

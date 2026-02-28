@@ -122,14 +122,10 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    'site-settings': SiteSetting;
-    'default-seo': DefaultSeo;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    'default-seo': DefaultSeoSelect<false> | DefaultSeoSelect<true>;
   };
   locale: null;
   user: User & {
@@ -3343,117 +3339,6 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
- * Global site configuration and branding
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings".
- */
-export interface SiteSetting {
-  id: number;
-  /**
-   * The name of your agency/company
-   */
-  siteName: string;
-  /**
-   * A short tagline or slogan
-   */
-  tagline?: string | null;
-  /**
-   * Main logo (preferably SVG)
-   */
-  logo?: (number | null) | Media;
-  /**
-   * Light version for dark backgrounds
-   */
-  logoLight?: (number | null) | Media;
-  /**
-   * Browser favicon (32x32 or 64x64 PNG)
-   */
-  favicon?: (number | null) | Media;
-  email?: string | null;
-  phone?: string | null;
-  address?: {
-    street?: string | null;
-    city?: string | null;
-    state?: string | null;
-    zip?: string | null;
-    country?: string | null;
-  };
-  /**
-   * e.g., "Monday - Friday: 9am - 6pm"
-   */
-  businessHours?: string | null;
-  socialLinks?:
-    | {
-        platform:
-          | 'facebook'
-          | 'twitter'
-          | 'instagram'
-          | 'linkedin'
-          | 'youtube'
-          | 'tiktok'
-          | 'pinterest'
-          | 'dribbble'
-          | 'behance'
-          | 'github';
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  googleAnalyticsId?: string | null;
-  googleTagManagerId?: string | null;
-  facebookPixelId?: string | null;
-  /**
-   * Custom scripts to add in the <head> tag
-   */
-  customHeadScripts?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * Default SEO settings for the entire site
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "default-seo".
- */
-export interface DefaultSeo {
-  id: number;
-  /**
-   * Appended to all page titles (e.g., "About Us | Marketing Agency")
-   */
-  titleSuffix?: string | null;
-  /**
-   * Used when a page has no title set
-   */
-  defaultTitle?: string | null;
-  /**
-   * Default meta description (max 160 characters)
-   */
-  defaultDescription?: string | null;
-  /**
-   * Default Open Graph image (1200x630 recommended)
-   */
-  defaultImage?: (number | null) | Media;
-  openGraph?: {
-    /**
-     * Displayed in social media shares
-     */
-    siteName?: string | null;
-    type?: ('website' | 'article' | 'profile') | null;
-    locale?: string | null;
-  };
-  twitter?: {
-    cardType?: ('summary' | 'summary_large_image') | null;
-    site?: string | null;
-  };
-  robots?: {
-    index?: boolean | null;
-    follow?: boolean | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -3496,75 +3381,6 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings_select".
- */
-export interface SiteSettingsSelect<T extends boolean = true> {
-  siteName?: T;
-  tagline?: T;
-  logo?: T;
-  logoLight?: T;
-  favicon?: T;
-  email?: T;
-  phone?: T;
-  address?:
-    | T
-    | {
-        street?: T;
-        city?: T;
-        state?: T;
-        zip?: T;
-        country?: T;
-      };
-  businessHours?: T;
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
-  googleAnalyticsId?: T;
-  googleTagManagerId?: T;
-  facebookPixelId?: T;
-  customHeadScripts?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "default-seo_select".
- */
-export interface DefaultSeoSelect<T extends boolean = true> {
-  titleSuffix?: T;
-  defaultTitle?: T;
-  defaultDescription?: T;
-  defaultImage?: T;
-  openGraph?:
-    | T
-    | {
-        siteName?: T;
-        type?: T;
-        locale?: T;
-      };
-  twitter?:
-    | T
-    | {
-        cardType?: T;
-        site?: T;
-      };
-  robots?:
-    | T
-    | {
-        index?: T;
-        follow?: T;
       };
   updatedAt?: T;
   createdAt?: T;
