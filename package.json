@@ -5,7 +5,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build --no-lint",
+    "build-prod:copy-static": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/ && cp -r media .next/standalone/media && cp -r log .next/standalone/log",
+    "js-to-cjs": "cross-env NODE_OPTIONS=--no-deprecation node scripts/convert-standalone-to-commonjs.js",
+    "build-prod": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && next build --no-lint && yarn build-prod:copy-static && yarn js-to-cjs",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
@@ -19,7 +22,9 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test --config=playwright.config.ts",
-    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "migrate:create": "payload migrate:create",
+    "migrate": "payload migrate"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.73.0",

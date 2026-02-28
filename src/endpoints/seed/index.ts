@@ -27,7 +27,6 @@ import {
   testimonial5,
 } from "./testimonials"
 import { caseStudy1, caseStudy2, caseStudy3, caseStudy4 } from "./case-studies"
-import { contactSubmission1, contactSubmission2, contactSubmission3 } from "./contact-submissions"
 
 const collections: CollectionSlug[] = [
   "categories",
