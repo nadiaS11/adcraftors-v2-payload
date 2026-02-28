@@ -25,7 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body className={cn(GeistSans.variable, GeistMono.variable, "flex flex-col min-h-screen")}>
         <AdminBar
           adminBarProps={{
             preview: isEnabled,
@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
 
         <Header />
-        {children}
+        <main className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>

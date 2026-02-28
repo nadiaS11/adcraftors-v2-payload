@@ -144,9 +144,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_payload_folders_folder_type" AS ENUM('media');
   CREATE TYPE "public"."enum_header_nav_items_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_footer_nav_items_link_type" AS ENUM('reference', 'custom');
-  CREATE TYPE "public"."enum_site_settings_social_links_platform" AS ENUM('facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'tiktok', 'pinterest', 'dribbble', 'behance', 'github');
-  CREATE TYPE "public"."enum_default_seo_open_graph_type" AS ENUM('website', 'article', 'profile');
-  CREATE TYPE "public"."enum_default_seo_twitter_card_type" AS ENUM('summary', 'summary_large_image');
   CREATE TABLE "media" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"alt" varchar,
@@ -1720,54 +1717,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"case_studies_id" integer
   );
   
-  CREATE TABLE "site_settings_social_links" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"platform" "enum_site_settings_social_links_platform" NOT NULL,
-  	"url" varchar NOT NULL
-  );
-  
-  CREATE TABLE "site_settings" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"site_name" varchar DEFAULT 'Marketing Agency' NOT NULL,
-  	"tagline" varchar,
-  	"logo_id" integer,
-  	"logo_light_id" integer,
-  	"favicon_id" integer,
-  	"email" varchar,
-  	"phone" varchar,
-  	"address_street" varchar,
-  	"address_city" varchar,
-  	"address_state" varchar,
-  	"address_zip" varchar,
-  	"address_country" varchar,
-  	"business_hours" varchar,
-  	"google_analytics_id" varchar,
-  	"google_tag_manager_id" varchar,
-  	"facebook_pixel_id" varchar,
-  	"custom_head_scripts" varchar,
-  	"updated_at" timestamp(3) with time zone,
-  	"created_at" timestamp(3) with time zone
-  );
-  
-  CREATE TABLE "default_seo" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"title_suffix" varchar DEFAULT ' | Marketing Agency',
-  	"default_title" varchar,
-  	"default_description" varchar,
-  	"default_image_id" integer,
-  	"open_graph_site_name" varchar,
-  	"open_graph_type" "enum_default_seo_open_graph_type" DEFAULT 'website',
-  	"open_graph_locale" varchar DEFAULT 'en_US',
-  	"twitter_card_type" "enum_default_seo_twitter_card_type" DEFAULT 'summary_large_image',
-  	"twitter_site" varchar,
-  	"robots_index" boolean DEFAULT true,
-  	"robots_follow" boolean DEFAULT true,
-  	"updated_at" timestamp(3) with time zone,
-  	"created_at" timestamp(3) with time zone
-  );
-  
   ALTER TABLE "media" ADD CONSTRAINT "media_folder_id_payload_folders_id_fk" FOREIGN KEY ("folder_id") REFERENCES "public"."payload_folders"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "categories_breadcrumbs" ADD CONSTRAINT "categories_breadcrumbs_doc_id_categories_id_fk" FOREIGN KEY ("doc_id") REFERENCES "public"."categories"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "categories_breadcrumbs" ADD CONSTRAINT "categories_breadcrumbs_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."categories"("id") ON DELETE cascade ON UPDATE no action;
@@ -1962,11 +1911,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "footer_rels" ADD CONSTRAINT "footer_rels_posts_fk" FOREIGN KEY ("posts_id") REFERENCES "public"."posts"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "footer_rels" ADD CONSTRAINT "footer_rels_services_fk" FOREIGN KEY ("services_id") REFERENCES "public"."services"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "footer_rels" ADD CONSTRAINT "footer_rels_case_studies_fk" FOREIGN KEY ("case_studies_id") REFERENCES "public"."case_studies"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "site_settings_social_links" ADD CONSTRAINT "site_settings_social_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."site_settings"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "site_settings" ADD CONSTRAINT "site_settings_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "site_settings" ADD CONSTRAINT "site_settings_logo_light_id_media_id_fk" FOREIGN KEY ("logo_light_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "site_settings" ADD CONSTRAINT "site_settings_favicon_id_media_id_fk" FOREIGN KEY ("favicon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "default_seo" ADD CONSTRAINT "default_seo_default_image_id_media_id_fk" FOREIGN KEY ("default_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   CREATE INDEX "media_folder_idx" ON "media" USING btree ("folder_id");
   CREATE INDEX "media_updated_at_idx" ON "media" USING btree ("updated_at");
   CREATE INDEX "media_created_at_idx" ON "media" USING btree ("created_at");
@@ -2403,13 +2347,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "footer_rels_pages_id_idx" ON "footer_rels" USING btree ("pages_id");
   CREATE INDEX "footer_rels_posts_id_idx" ON "footer_rels" USING btree ("posts_id");
   CREATE INDEX "footer_rels_services_id_idx" ON "footer_rels" USING btree ("services_id");
-  CREATE INDEX "footer_rels_case_studies_id_idx" ON "footer_rels" USING btree ("case_studies_id");
-  CREATE INDEX "site_settings_social_links_order_idx" ON "site_settings_social_links" USING btree ("_order");
-  CREATE INDEX "site_settings_social_links_parent_id_idx" ON "site_settings_social_links" USING btree ("_parent_id");
-  CREATE INDEX "site_settings_logo_idx" ON "site_settings" USING btree ("logo_id");
-  CREATE INDEX "site_settings_logo_light_idx" ON "site_settings" USING btree ("logo_light_id");
-  CREATE INDEX "site_settings_favicon_idx" ON "site_settings" USING btree ("favicon_id");
-  CREATE INDEX "default_seo_default_image_idx" ON "default_seo" USING btree ("default_image_id");`)
+  CREATE INDEX "footer_rels_case_studies_id_idx" ON "footer_rels" USING btree ("case_studies_id");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -2531,9 +2469,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "footer_nav_items" CASCADE;
   DROP TABLE "footer" CASCADE;
   DROP TABLE "footer_rels" CASCADE;
-  DROP TABLE "site_settings_social_links" CASCADE;
-  DROP TABLE "site_settings" CASCADE;
-  DROP TABLE "default_seo" CASCADE;
   DROP TYPE "public"."enum_clients_industry";
   DROP TYPE "public"."enum_team_members_department";
   DROP TYPE "public"."enum_services_category";
@@ -2675,8 +2610,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_payload_jobs_task_slug";
   DROP TYPE "public"."enum_payload_folders_folder_type";
   DROP TYPE "public"."enum_header_nav_items_link_type";
-  DROP TYPE "public"."enum_footer_nav_items_link_type";
-  DROP TYPE "public"."enum_site_settings_social_links_platform";
-  DROP TYPE "public"."enum_default_seo_open_graph_type";
-  DROP TYPE "public"."enum_default_seo_twitter_card_type";`)
+  DROP TYPE "public"."enum_footer_nav_items_link_type";`)
 }
