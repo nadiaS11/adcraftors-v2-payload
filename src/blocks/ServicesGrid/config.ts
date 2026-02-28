@@ -72,28 +72,7 @@ export const ServicesGrid: Block = {
         condition: (_, siblingData) => siblingData.type !== "grid",
       },
     },
-    {
-      name: "header",
-      type: "group",
-      label: "Section Header",
-      fields: [
-        {
-          name: "eyebrow",
-          type: "text",
-          admin: {
-            placeholder: 'e.g., "What We Do"',
-          },
-        },
-        {
-          name: "headline",
-          type: "text",
-          required: true,
-          admin: {
-            placeholder: 'e.g., "Our Services"',
-          },
-        },
-      ],
-    },
+
     {
       name: "populateBy",
       type: "select",

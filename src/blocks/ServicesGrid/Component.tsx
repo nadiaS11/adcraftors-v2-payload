@@ -17,7 +17,6 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockType> = async (props) 
     type,
     title,
     link: headerLinks,
-    header,
     populateBy,
     selectedServices,
     limit = 6,
@@ -110,11 +109,7 @@ export const ServicesGridBlock: React.FC<ServicesGridBlockType> = async (props) 
             </div>
           </div>
         )}
-        {(!type || type === "grid") && (header?.eyebrow || header?.headline) && (
-          <HeadingFeature
-            header={{ eyebrow: props.header.eyebrow ?? "", headline: props.header.headline ?? "" }}
-          />
-        )}
+
         {(type === "feat" || type === "both") && featuredService && (
           <div className="mb-16">
             <FeaturedServiceCard service={featuredService} caseStudies={caseStudies} />

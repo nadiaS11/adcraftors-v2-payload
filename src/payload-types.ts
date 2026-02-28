@@ -1277,10 +1277,6 @@ export interface ServicesGridBlock {
     relationTo: 'services';
     value: number | Service;
   } | null;
-  header: {
-    eyebrow?: string | null;
-    headline: string;
-  };
   populateBy?: ('selection' | 'collection' | 'recents') | null;
   /**
    * Select the services to display
@@ -2619,12 +2615,6 @@ export interface ServicesGridBlockSelect<T extends boolean = true> {
         id?: T;
       };
   featDoc?: T;
-  header?:
-    | T
-    | {
-        eyebrow?: T;
-        headline?: T;
-      };
   populateBy?: T;
   selectedServices?: T;
   limit?: T;
